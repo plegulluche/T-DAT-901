@@ -1,6 +1,6 @@
 # Crypto viz - T-DAT-901
 
-![Project logo](tbd.png)
+![Project logo](logo.png)
 
 # Sommaire
 
