@@ -24,7 +24,7 @@ services:
     
     # Network for this container
     networks:
-      - spark-net  # Custom bridge network for inter-container communication
+      - bootstrap-spark-net  # Custom bridge network for inter-container communication
 
   # Define the Spark Worker service
   spark-worker:
@@ -43,7 +43,7 @@ services:
     
     # Network for this container
     networks:
-      - spark-net  # Custom bridge network for inter-container communication
+      - bootstrap-spark-net  # Custom bridge network for inter-container communication
       
     # Specify that this service depends on another service
     depends_on:
@@ -51,5 +51,5 @@ services:
 
 # Define custom networks
 networks:
-  spark-net:  # Custom bridge network name
+  bootstrap-spark-net:  # Custom bridge network name
     driver: bridge  # Use the default bridge network driver
