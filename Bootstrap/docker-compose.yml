@@ -20,14 +20,14 @@ services:
     
     # Volume mapping to share a folder between host and container
     volumes:
-      - "<your-working-dir-path>:/opt/bitnami/spark/work"  # Replace with your local directory
+      - "/home/pedrobear/Epitech/T-DAT-901/Bootstrap/spark_workdir:/opt/bitnami/spark/work"  # Replace with your local directory
     
     # Network for this container
     networks:
       - bootstrap-spark-net  # Custom bridge network for inter-container communication
 
   # Define the Spark Worker service
-  spark-worker:
+  spark-worker01:
   
     # Image to use for creating this container
     image: bitnami/spark:latest
@@ -39,7 +39,7 @@ services:
       
     # Volume mapping to share a folder between host and container
     volumes:
-      - "<your-working-dir-path>:/opt/bitnami/spark/work"  # Replace with your local directory
+      - "/home/pedrobear/Epitech/T-DAT-901/Bootstrap/spark_workdir:/opt/bitnami/spark/work"  # Replace with your local directory
     
     # Network for this container
     networks:
@@ -48,6 +48,87 @@ services:
     # Specify that this service depends on another service
     depends_on:
       - spark-master  # Worker depends on the Master being up and running first
+
+  spark-worker02:
+    
+      # Image to use for creating this container
+      image: bitnami/spark:latest
+      
+      # Environment variables for the container
+      environment:
+        - SPARK_MODE=worker  # Set Spark to Worker mode
+        - SPARK_MASTER_URL=spark://spark-master:7077  # URL of the Spark Master for this worker to connect to
+        
+      # Volume mapping to share a folder between host and container
+      volumes:
+        - "/home/pedrobear/Epitech/T-DAT-901/Bootstrap/spark_workdir:/opt/bitnami/spark/work"  # Replace with your local directory
+      
+      # Network for this container
+      networks:
+        - bootstrap-spark-net  # Custom bridge network for inter-container communication
+        
+      # Specify that this service depends on another service
+      depends_on:
+        - spark-master  # Worker depends on the Master being up and running first
+
+  spark-worker03:
+    
+      # Image to use for creating this container
+      image: bitnami/spark:latest
+      
+      # Environment variables for the container
+      environment:
+        - SPARK_MODE=worker  # Set Spark to Worker mode
+        - SPARK_MASTER_URL=spark://spark-master:7077  # URL of the Spark Master for this worker to connect to
+        
+      # Volume mapping to share a folder between host and container
+      volumes:
+        - "/home/pedrobear/Epitech/T-DAT-901/Bootstrap/spark_workdir:/opt/bitnami/spark/work"  # Replace with your local directory
+      
+      # Network for this container
+      networks:
+        - bootstrap-spark-net  # Custom bridge network for inter-container communication
+        
+      # Specify that this service depends on another service
+      depends_on:
+        - spark-master  # Worker depends on the Master being up and running first
+
+  spark-worker04:
+    
+      # Image to use for creating this container
+      image: bitnami/spark:latest
+      
+      # Environment variables for the container
+      environment:
+        - SPARK_MODE=worker  # Set Spark to Worker mode
+        - SPARK_MASTER_URL=spark://spark-master:7077  # URL of the Spark Master for this worker to connect to
+        
+      # Volume mapping to share a folder between host and container
+      volumes:
+        - "/home/pedrobear/Epitech/T-DAT-901/Bootstrap/spark_workdir:/opt/bitnami/spark/work"  # Replace with your local directory
+      
+      # Network for this container
+      networks:
+        - bootstrap-spark-net  # Custom bridge network for inter-container communication
+        
+      # Specify that this service depends on another service
+      depends_on:
+        - spark-master  # Worker depends on the Master being up and running first
+
+  # New Section: Start of Spark Application Service definition
+  spark-application:
+    image: bitnami/spark:latest  # Image to use, same as for the master and workers
+    environment:  
+      - SPARK_MASTER_URL=spark://spark-master:7077  # Set environment variable for Spark Master URL
+    volumes:
+      - "/home/pedrobear/Epitech/T-DAT-901/Bootstrap/spark_workdir:/opt/bitnami/spark/work"  # Map your working directory to the container's working directory
+    networks:
+      - bootstrap-spark-net  # Attach to the same custom network as the master and workers
+    depends_on:
+      - spark-master  # Make sure the Spark master is up before running the application
+    # Override the default entrypoint to install pyspark, set PATH, and launch ipython
+    entrypoint: /bin/bash -c "pip install pyspark ipython && export PATH=$$PATH:/.local/bin/ && ipython"
+ 
 
 # Define custom networks
 networks:
