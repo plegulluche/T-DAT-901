@@ -118,6 +118,7 @@ services:
   # New Section: Start of Spark Application Service definition
   spark-application:
     image: bitnami/spark:latest  # Image to use, same as for the master and workers
+    user: "root"
     environment:  
       - SPARK_MASTER_URL=spark://spark-master:7077  # Set environment variable for Spark Master URL
     volumes:
@@ -127,7 +128,8 @@ services:
     depends_on:
       - spark-master  # Make sure the Spark master is up before running the application
     # Override the default entrypoint to install pyspark, set PATH, and launch ipython
-    entrypoint: /bin/bash -c "pip install pyspark ipython && export PATH=$$PATH:/.local/bin/ && ipython"
+    # entrypoint: /bin/bash -c "pip install pyspark ipython && export PATH=$$PATH:/.local/bin/ && ipython"
+    entrypoint: /bin/bash -c "pip install pyspark && spark-submit /opt/bitnami/spark/work/word_count.py"
  
 
 # Define custom networks

@@ -1,0 +1,84 @@
+Spark Executor Command: "/opt/bitnami/java/bin/java" "-cp" "/opt/bitnami/spark/conf/:/opt/bitnami/spark/jars/*" "-Xmx1024M" "-Dspark.driver.port=43771" "-Djava.net.preferIPv6Addresses=false" "-XX:+IgnoreUnrecognizedVMOptions" "--add-opens=java.base/java.lang=ALL-UNNAMED" "--add-opens=java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" "--add-opens=java.base/java.io=ALL-UNNAMED" "--add-opens=java.base/java.net=ALL-UNNAMED" "--add-opens=java.base/java.nio=ALL-UNNAMED" "--add-opens=java.base/java.util=ALL-UNNAMED" "--add-opens=java.base/java.util.concurrent=ALL-UNNAMED" "--add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED" "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED" "--add-opens=java.base/sun.nio.cs=ALL-UNNAMED" "--add-opens=java.base/sun.security.action=ALL-UNNAMED" "--add-opens=java.base/sun.util.calendar=ALL-UNNAMED" "--add-opens=java.security.jgss/sun.security.krb5=ALL-UNNAMED" "-Djdk.reflect.useDirectMethodHandle=false" "org.apache.spark.executor.CoarseGrainedExecutorBackend" "--driver-url" "spark://CoarseGrainedScheduler@453fdcd1dd57:43771" "--executor-id" "0" "--hostname" "172.20.0.4" "--cores" "3" "--app-id" "app-20230929140732-0000" "--worker-url" "spark://Worker@172.20.0.4:33049" "--resourceProfileId" "0"
+========================================
+
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+23/09/29 14:07:42 INFO CoarseGrainedExecutorBackend: Started daemon with process name: 98@d8acfdbcc315
+23/09/29 14:07:42 INFO SignalUtils: Registering signal handler for TERM
+23/09/29 14:07:42 INFO SignalUtils: Registering signal handler for HUP
+23/09/29 14:07:42 INFO SignalUtils: Registering signal handler for INT
+23/09/29 14:07:46 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+23/09/29 14:07:46 INFO SecurityManager: Changing view acls to: spark
+23/09/29 14:07:46 INFO SecurityManager: Changing modify acls to: spark
+23/09/29 14:07:46 INFO SecurityManager: Changing view acls groups to: 
+23/09/29 14:07:46 INFO SecurityManager: Changing modify acls groups to: 
+23/09/29 14:07:46 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark; groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY
+23/09/29 14:07:48 INFO TransportClientFactory: Successfully created connection to 453fdcd1dd57/172.20.0.7:43771 after 354 ms (0 ms spent in bootstraps)
+23/09/29 14:07:48 INFO SecurityManager: Changing view acls to: spark
+23/09/29 14:07:48 INFO SecurityManager: Changing modify acls to: spark
+23/09/29 14:07:48 INFO SecurityManager: Changing view acls groups to: 
+23/09/29 14:07:48 INFO SecurityManager: Changing modify acls groups to: 
+23/09/29 14:07:48 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark; groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY
+23/09/29 14:07:49 INFO TransportClientFactory: Successfully created connection to 453fdcd1dd57/172.20.0.7:43771 after 13 ms (0 ms spent in bootstraps)
+23/09/29 14:07:49 INFO DiskBlockManager: Created local directory at /tmp/spark-13f09f5b-c0e2-413e-bcc5-327bef4ddaa6/executor-bd105dba-3396-4bc9-98eb-ec042acdf551/blockmgr-bef9ee17-efdf-457b-ae5e-0955b4291449
+23/09/29 14:07:49 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+23/09/29 14:07:51 INFO CoarseGrainedExecutorBackend: Connecting to driver: spark://CoarseGrainedScheduler@453fdcd1dd57:43771
+23/09/29 14:07:51 INFO WorkerWatcher: Connecting to worker spark://Worker@172.20.0.4:33049
+23/09/29 14:07:51 INFO TransportClientFactory: Successfully created connection to /172.20.0.4:33049 after 77 ms (0 ms spent in bootstraps)
+23/09/29 14:07:51 INFO WorkerWatcher: Successfully connected to spark://Worker@172.20.0.4:33049
+23/09/29 14:07:51 INFO ResourceUtils: ==============================================================
+23/09/29 14:07:51 INFO ResourceUtils: No custom resources configured for spark.executor.
+23/09/29 14:07:52 INFO ResourceUtils: ==============================================================
+23/09/29 14:07:52 INFO CoarseGrainedExecutorBackend: Successfully registered with driver
+23/09/29 14:07:52 INFO Executor: Starting executor ID 0 on host 172.20.0.4
+23/09/29 14:07:52 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 40223.
+23/09/29 14:07:52 INFO NettyBlockTransferService: Server created on 172.20.0.4:40223
+23/09/29 14:07:52 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+23/09/29 14:07:53 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(0, 172.20.0.4, 40223, None)
+23/09/29 14:07:53 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(0, 172.20.0.4, 40223, None)
+23/09/29 14:07:53 INFO BlockManager: Initialized BlockManager: BlockManagerId(0, 172.20.0.4, 40223, None)
+23/09/29 14:07:53 INFO Executor: Starting executor with user classpath (userClassPathFirst = false): ''
+23/09/29 14:21:28 ERROR CoarseGrainedExecutorBackend: Executor self-exiting due to : Driver 453fdcd1dd57:43771 disassociated! Shutting down.
+23/09/29 14:21:28 INFO TransportClientFactory: Found inactive connection to 453fdcd1dd57/172.20.0.7:43771, creating a new one.
+23/09/29 14:21:28 WARN Executor: Issue communicating with driver in heartbeater
+org.apache.spark.SparkException: Exception thrown in awaitResult: 
+	at org.apache.spark.util.ThreadUtils$.awaitResult(ThreadUtils.scala:322)
+	at org.apache.spark.rpc.RpcTimeout.awaitResult(RpcTimeout.scala:75)
+	at org.apache.spark.rpc.RpcEndpointRef.askSync(RpcEndpointRef.scala:101)
+	at org.apache.spark.executor.Executor.reportHeartBeat(Executor.scala:1107)
+	at org.apache.spark.executor.Executor.$anonfun$heartbeater$1(Executor.scala:244)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+	at org.apache.spark.util.Utils$.logUncaughtExceptions(Utils.scala:2088)
+	at org.apache.spark.Heartbeater$$anon$1.run(Heartbeater.scala:46)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.runAndReset(FutureTask.java:305)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:305)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Caused by: java.io.IOException: Failed to connect to 453fdcd1dd57/172.20.0.7:43771
+	at org.apache.spark.network.client.TransportClientFactory.createClient(TransportClientFactory.java:284)
+	at org.apache.spark.network.client.TransportClientFactory.createClient(TransportClientFactory.java:214)
+	at org.apache.spark.network.client.TransportClientFactory.createClient(TransportClientFactory.java:226)
+	at org.apache.spark.rpc.netty.NettyRpcEnv.createClient(NettyRpcEnv.scala:204)
+	at org.apache.spark.rpc.netty.Outbox$$anon$1.call(Outbox.scala:202)
+	at org.apache.spark.rpc.netty.Outbox$$anon$1.call(Outbox.scala:198)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	... 3 more
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: 453fdcd1dd57/172.20.0.7:43771
+Caused by: java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:946)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:337)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:334)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:776)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+23/09/29 14:21:30 INFO MemoryStore: MemoryStore cleared
+23/09/29 14:21:30 INFO BlockManager: BlockManager stopped
+23/09/29 14:21:30 INFO ShutdownHookManager: Shutdown hook called

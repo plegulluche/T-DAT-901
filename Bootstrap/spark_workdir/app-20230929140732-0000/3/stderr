@@ -1,0 +1,43 @@
+Spark Executor Command: "/opt/bitnami/java/bin/java" "-cp" "/opt/bitnami/spark/conf/:/opt/bitnami/spark/jars/*" "-Xmx1024M" "-Dspark.driver.port=43771" "-Djava.net.preferIPv6Addresses=false" "-XX:+IgnoreUnrecognizedVMOptions" "--add-opens=java.base/java.lang=ALL-UNNAMED" "--add-opens=java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" "--add-opens=java.base/java.io=ALL-UNNAMED" "--add-opens=java.base/java.net=ALL-UNNAMED" "--add-opens=java.base/java.nio=ALL-UNNAMED" "--add-opens=java.base/java.util=ALL-UNNAMED" "--add-opens=java.base/java.util.concurrent=ALL-UNNAMED" "--add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED" "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED" "--add-opens=java.base/sun.nio.cs=ALL-UNNAMED" "--add-opens=java.base/sun.security.action=ALL-UNNAMED" "--add-opens=java.base/sun.util.calendar=ALL-UNNAMED" "--add-opens=java.security.jgss/sun.security.krb5=ALL-UNNAMED" "-Djdk.reflect.useDirectMethodHandle=false" "org.apache.spark.executor.CoarseGrainedExecutorBackend" "--driver-url" "spark://CoarseGrainedScheduler@453fdcd1dd57:43771" "--executor-id" "3" "--hostname" "172.20.0.6" "--cores" "3" "--app-id" "app-20230929140732-0000" "--worker-url" "spark://Worker@172.20.0.6:33207" "--resourceProfileId" "0"
+========================================
+
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+23/09/29 14:07:42 INFO CoarseGrainedExecutorBackend: Started daemon with process name: 98@1d646f4e7f87
+23/09/29 14:07:42 INFO SignalUtils: Registering signal handler for TERM
+23/09/29 14:07:42 INFO SignalUtils: Registering signal handler for HUP
+23/09/29 14:07:42 INFO SignalUtils: Registering signal handler for INT
+23/09/29 14:07:45 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+23/09/29 14:07:46 INFO SecurityManager: Changing view acls to: spark
+23/09/29 14:07:46 INFO SecurityManager: Changing modify acls to: spark
+23/09/29 14:07:46 INFO SecurityManager: Changing view acls groups to: 
+23/09/29 14:07:46 INFO SecurityManager: Changing modify acls groups to: 
+23/09/29 14:07:46 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark; groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY
+23/09/29 14:07:48 INFO TransportClientFactory: Successfully created connection to 453fdcd1dd57/172.20.0.7:43771 after 522 ms (0 ms spent in bootstraps)
+23/09/29 14:07:49 INFO SecurityManager: Changing view acls to: spark
+23/09/29 14:07:49 INFO SecurityManager: Changing modify acls to: spark
+23/09/29 14:07:49 INFO SecurityManager: Changing view acls groups to: 
+23/09/29 14:07:49 INFO SecurityManager: Changing modify acls groups to: 
+23/09/29 14:07:49 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark; groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY
+23/09/29 14:07:49 INFO TransportClientFactory: Successfully created connection to 453fdcd1dd57/172.20.0.7:43771 after 37 ms (0 ms spent in bootstraps)
+23/09/29 14:07:50 INFO DiskBlockManager: Created local directory at /tmp/spark-e0ff3358-5ad0-4bac-b03d-5795bc352e80/executor-15902548-bad1-429b-93d6-3858927ef566/blockmgr-7f5856c2-4520-443b-94ab-2d9bbbab611e
+23/09/29 14:07:50 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+23/09/29 14:07:52 INFO WorkerWatcher: Connecting to worker spark://Worker@172.20.0.6:33207
+23/09/29 14:07:52 INFO CoarseGrainedExecutorBackend: Connecting to driver: spark://CoarseGrainedScheduler@453fdcd1dd57:43771
+23/09/29 14:07:52 INFO TransportClientFactory: Successfully created connection to /172.20.0.6:33207 after 69 ms (0 ms spent in bootstraps)
+23/09/29 14:07:52 INFO WorkerWatcher: Successfully connected to spark://Worker@172.20.0.6:33207
+23/09/29 14:07:52 INFO ResourceUtils: ==============================================================
+23/09/29 14:07:52 INFO ResourceUtils: No custom resources configured for spark.executor.
+23/09/29 14:07:52 INFO ResourceUtils: ==============================================================
+23/09/29 14:07:53 INFO CoarseGrainedExecutorBackend: Successfully registered with driver
+23/09/29 14:07:53 INFO Executor: Starting executor ID 3 on host 172.20.0.6
+23/09/29 14:07:53 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 44355.
+23/09/29 14:07:53 INFO NettyBlockTransferService: Server created on 172.20.0.6:44355
+23/09/29 14:07:53 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+23/09/29 14:07:53 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(3, 172.20.0.6, 44355, None)
+23/09/29 14:07:53 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(3, 172.20.0.6, 44355, None)
+23/09/29 14:07:53 INFO BlockManager: Initialized BlockManager: BlockManagerId(3, 172.20.0.6, 44355, None)
+23/09/29 14:07:53 INFO Executor: Starting executor with user classpath (userClassPathFirst = false): ''
+23/09/29 14:21:28 ERROR CoarseGrainedExecutorBackend: Executor self-exiting due to : Driver 453fdcd1dd57:43771 disassociated! Shutting down.
+23/09/29 14:21:31 INFO MemoryStore: MemoryStore cleared
+23/09/29 14:21:31 INFO BlockManager: BlockManager stopped
+23/09/29 14:21:31 ERROR CoarseGrainedExecutorBackend: RECE
