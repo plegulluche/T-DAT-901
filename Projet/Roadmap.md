@@ -57,3 +57,9 @@ Once the basic setup is functioning as expected, we can discuss and implement in
 ```
 
 $${\color{red}Red}$$
+$${\color{green}Green}$$	
+$${\color{lightgreen}Light \space Green}$$	
+$${\color{blue}Blue}$$	
+$${\color{lightblue}Light \space Blue}$$	
+$${\color{black}Black}$$	
+$${\color{white}White}$$
