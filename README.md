@@ -1,6 +1,6 @@
 # Crypto viz - T-DAT-901
 
-![Project logo](Logo.png)
+![Project logo](./assets/Logo.png)
 
 # Sommaire
 
@@ -67,6 +67,9 @@ Semestre 9 *(premier semestre de M2)*
   * Nombre de commits : 0
   * Tâches implémentées : -
 * **Radu Gheorgiu**
+  * Nombre de commits : 0
+  * Tâches implémentées : -
+* **Rafael Adragna**
   * Nombre de commits : 0
   * Tâches implémentées : -
 
