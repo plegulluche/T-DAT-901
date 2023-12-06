@@ -1,4 +1,5 @@
 venv
 /venv
 *.csv
-*.txt
+news1.json
+news2.json
