@@ -7,11 +7,15 @@ def load_articles(filename):
     with open(filename, 'r') as file:
         return json.load(file)
 
-def send_article(channel, article):
+def send_article(channel, article, queue):
+    # Publishes a message to the specified queue
+    # 'channel' is the channel instance
+    # 'article' is the article data to be sent
+    # 'queue' is the name of the queue where the message will be published
     channel.basic_publish(exchange='',
-                          routing_key='articles',
+                          routing_key=queue,  # Use the provided queue name
                           body=json.dumps(article))
-    print(" [x] Sent article data: " + json.dumps(article))
+    print(f" [x] Sent to {queue}: " + json.dumps(article))
 
 # Load articles from file
 articles1 = load_articles('articles.json')
@@ -32,14 +36,16 @@ while True:  # Infinite loop for continuous sending
     # Send articles from articles.json
     random.shuffle(articles1)
     for article in articles1:
-        send_article(channel, article)
-        time.sleep(3)  # Adjust the delay as needed
+        send_article(channel, article, 'articles')  # Specify 'articles' queue
+        time.sleep(3)
 
     # Send articles from articles2.json
     random.shuffle(articles2)
     for article in articles2:
-        send_article(channel, article, queue='articles2')  # Assuming modified send_article to accept queue name
-        time.sleep(3)  # Adjust the delay as needed
+        send_article(channel, article, 'articles2')  # Specify 'articles2' queue
+        time.sleep(3)
+
+
 
 # Close the connection
 # connection.close()
