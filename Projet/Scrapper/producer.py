@@ -17,7 +17,9 @@ def send_article(channel, article):
 articles = load_articles('articles.json')
 
 # Establish a connection to RabbitMQ server
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+credentials = pika.PlainCredentials('user', 'password')
+connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', 5672, '/', credentials))
+
 channel = connection.channel()
 
 # Declare a queue

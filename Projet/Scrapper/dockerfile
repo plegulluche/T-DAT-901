@@ -8,9 +8,8 @@ WORKDIR /usr/src/app
 COPY . .
 
 # Install any needed packages specified in requirements.txt
-# If you have a requirements.txt, uncomment the next two lines
-# COPY requirements.txt ./
-# RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Run producer.py when the container launches
 CMD ["python", "./producer.py"]
