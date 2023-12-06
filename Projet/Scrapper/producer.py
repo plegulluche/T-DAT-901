@@ -14,7 +14,8 @@ def send_article(channel, article):
     print(" [x] Sent article data: " + json.dumps(article))
 
 # Load articles from file
-articles = load_articles('articles.json')
+articles1 = load_articles('articles.json')
+articles2 = load_articles('articles2.json')
 
 # Establish a connection to RabbitMQ server
 credentials = pika.PlainCredentials('user', 'password')
@@ -24,12 +25,21 @@ channel = connection.channel()
 
 # Declare a queue
 channel.queue_declare(queue='articles')
+channel.queue_declare(queue='articles2')
 
-for _ in range(10):  # Repeat 10 times
-    random.shuffle(articles)  # Randomize the order of articles
-    for article in articles:
+
+while True:  # Infinite loop for continuous sending
+    # Send articles from articles.json
+    random.shuffle(articles1)
+    for article in articles1:
         send_article(channel, article)
-    time.sleep(300)  # Pause for 5 minutes
+        time.sleep(3)  # Adjust the delay as needed
+
+    # Send articles from articles2.json
+    random.shuffle(articles2)
+    for article in articles2:
+        send_article(channel, article, queue='articles2')  # Assuming modified send_article to accept queue name
+        time.sleep(3)  # Adjust the delay as needed
 
 # Close the connection
-connection.close()
+# connection.close()
