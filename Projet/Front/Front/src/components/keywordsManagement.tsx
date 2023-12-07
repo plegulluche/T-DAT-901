@@ -3,6 +3,12 @@ import { useEffect } from "react";
 import { useState } from "react";
 // import requests from "../../api/Requests"
 
+type NewsKeywordsManagementProps = {
+  keywordss: string[];
+  setKeywordss: React.Dispatch<React.SetStateAction<string[]>>;
+};
+
+
 function Keyword(props: {
   keyword: string;
   deleteKeyword: (keyword: string) => void;
@@ -39,7 +45,7 @@ function Keyword(props: {
   );
 }
 
-export default function NewsKeywordsManagement({}) {
+export default function NewsKeywordsManagement({ keywordss, setKeywordss }: NewsKeywordsManagementProps) {
   const [newKeyword, setNewKeyword] = useState(false);
   const [input, setInput] = useState("");
   const [keywords, setKeywords] = useState<string[]>([]);
