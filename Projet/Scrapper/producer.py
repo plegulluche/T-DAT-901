@@ -15,7 +15,11 @@ def send_article(channel, article, queue):
     channel.basic_publish(exchange='',
                           routing_key=queue,  # Use the provided queue name
                           body=json.dumps(article))
-    print(f" [x] Sent to {queue}: " + json.dumps(article))
+    try:
+        print(f" [x] Sent to {queue}",flush=True)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
 
 # Load articles from file
 articles1 = load_articles('articles.json')

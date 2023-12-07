@@ -7,8 +7,9 @@ def callback(ch, method, properties, body):
     # 'method' contains method frame with routing_key, which tells us the queue name
     # 'properties' are the properties set when the message was sent (not used here)
     # 'body' is the actual message content
-    print(f"Received from {method.routing_key}: {body}")
-    time.sleep(3)  # Log every 3 seconds to avoid flooding
+    # print(f"Received from {method.routing_key}: {body}")
+    print(f"A new message has been posted on {method.routing_key} queue", flush=True)
+    # time.sleep(3)  # Log every 3 seconds to avoid flooding
 
 # Establish a connection to RabbitMQ server
 credentials = pika.PlainCredentials('user', 'password')
@@ -27,3 +28,6 @@ channel.basic_consume(queue='articles2', on_message_callback=callback, auto_ack=
 
 print(' [*] Waiting for messages. To exit press CTRL+C')
 channel.start_consuming()  # Start listening for messages
+
+# Checking mount update
+# Another update
