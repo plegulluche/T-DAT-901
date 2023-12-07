@@ -7,7 +7,7 @@ export default function Dashboard() {
     // <AnimatePresence></AnimatePresence>
     <div className="p-5 text-gray-100 w-full h-full mt-5">
       <div className="w-fit">
-        <p className="text-3xl font-semibold">Welcome Boustiflor !</p>
+        <p className="text-3xl font-semibold">Welcome User !</p>
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: 128 }}
