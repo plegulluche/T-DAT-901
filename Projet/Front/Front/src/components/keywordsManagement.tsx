@@ -61,7 +61,7 @@ export default function NewsKeywordsManagement({ keywords, setKeywords }: NewsKe
 
   if (!keywords) return <p>Loading</p>;
   return (
-    <div className="h-[700px] flex flex-col bg-[#1B1B1B] p-5 rounded-lg fixed">
+    <div className="h-[700px] flex flex-col bg-[#1B1B1B] p-5 rounded-lg">
       <div className="mb-5">
         <p className="text-gray-100 text-2xl">News keywords</p>
         <div className="h-[2px] w-20 bg-[#771FED] mt-2"></div>
