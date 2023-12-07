@@ -8,7 +8,6 @@ type NewsKeywordsManagementProps = {
   setKeywordss: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-
 function Keyword(props: {
   keyword: string;
   deleteKeyword: (keyword: string) => void;
@@ -45,7 +44,7 @@ function Keyword(props: {
   );
 }
 
-export default function NewsKeywordsManagement({ keywordss, setKeywordss }: NewsKeywordsManagementProps) {
+export default function NewsKeywordsManagement() {
   const [newKeyword, setNewKeyword] = useState(false);
   const [input, setInput] = useState("");
   const [keywords, setKeywords] = useState<string[]>([]);
@@ -62,7 +61,7 @@ export default function NewsKeywordsManagement({ keywordss, setKeywordss }: News
 
   if (!keywords) return <p>Loading</p>;
   return (
-    <div className="h-[700px] flex flex-col bg-[#1B1B1B] p-5 rounded-lg">
+    <div className="h-[700px] flex flex-col bg-[#1B1B1B] p-5 rounded-lg fixed">
       <div className="mb-5">
         <p className="text-gray-100 text-2xl">News keywords</p>
         <div className="h-[2px] w-20 bg-[#771FED] mt-2"></div>
