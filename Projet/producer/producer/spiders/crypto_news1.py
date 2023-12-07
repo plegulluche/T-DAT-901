@@ -1,16 +1,24 @@
 import scrapy
 import json
+import os
 
 class CryptoSpider(scrapy.Spider):
     name = 'crypto_1'
     start_urls = ['https://cryptonews.com/news/']
-    
+
     def __init__(self, max_page=None, *args, **kwargs):
         super(CryptoSpider, self).__init__(*args, **kwargs)
         self.max_page = int(max_page) if max_page is not None else 1
         self.actual_page = 1
+
+        if os.path.exists('news1.json'):
+            os.remove('news1.json')
     
-    def parse(self, response):
+    def start_requests(self):
+        url = 'https://cryptonews.com/news/'
+        yield scrapy.Request(url, self.parse, cb_kwargs={'current_page': 1})
+
+    def parse(self, response, current_page):
         articles = response.css('div[id^="post-"]')
         for article in articles:
             title = article.css('.article__title::text').get()
@@ -21,10 +29,8 @@ class CryptoSpider(scrapy.Spider):
                 yield scrapy.Request(url=link, callback=self.parse_article, meta={'title': title, 'link': link, 'source': source})
 
         next_page = response.css('div.pagination_main a.next::attr(href)').get()
-        if self.actual_page < self.max_page:
-            if next_page:
-                self.actual_page = self.actual_page + 1
-                yield scrapy.Request(url=next_page, callback=self.parse)
+        if current_page < self.max_page and next_page:
+            yield scrapy.Request(url=next_page, callback=self.parse, cb_kwargs={'current_page': current_page + 1})
 
     def parse_article(self, response):
         title = response.meta['title']
@@ -41,9 +47,17 @@ class CryptoSpider(scrapy.Spider):
             'content': content,
         }
 
-        # Write to news1.json
         with open('news1.json', 'a', encoding='utf-8') as json_file:
-            json.dump(data, json_file, ensure_ascii=False)
+            if os.path.getsize('news1.json') == 0:
+                json_file.write('[')
+            else:
+                json_file.write(',')
+
+            json.dump(data, json_file, ensure_ascii=False, indent=2)
             json_file.write('\n')
 
         yield data
+
+    def closed(self, reason):
+        with open('news1.json', 'a', encoding='utf-8') as json_file:
+            json_file.write(']')

@@ -1,6 +1,7 @@
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from producer.spiders.crypto_news1 import CryptoSpider
+from producer.spiders.crypto_news2 import CryptoNewsSpider
 import sys
 
 def main():
@@ -21,6 +22,8 @@ def main():
     spider_args = {'max_page': max_page}
 
     process.crawl(CryptoSpider, **spider_args)
+
+    process.crawl(CryptoNewsSpider)
 
     process.start()
 
