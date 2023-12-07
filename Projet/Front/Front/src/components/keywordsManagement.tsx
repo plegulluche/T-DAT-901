@@ -4,8 +4,8 @@ import { useState } from "react";
 // import requests from "../../api/Requests"
 
 type NewsKeywordsManagementProps = {
-  keywordss: string[];
-  setKeywordss: React.Dispatch<React.SetStateAction<string[]>>;
+  keywords: string[];
+  setKeywords: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 function Keyword(props: {
@@ -44,10 +44,10 @@ function Keyword(props: {
   );
 }
 
-export default function NewsKeywordsManagement() {
+export default function NewsKeywordsManagement({ keywords, setKeywords }: NewsKeywordsManagementProps) {
   const [newKeyword, setNewKeyword] = useState(false);
   const [input, setInput] = useState("");
-  const [keywords, setKeywords] = useState<string[]>([]);
+
 
   const addNewKeyword = () => {
     setKeywords([...keywords, input]);
