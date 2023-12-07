@@ -39,23 +39,23 @@ function MainArticle({ content }: MainArticleProps) {
   );
 }
 
-type BasicArticleProps = {
-  content: ArticleContent;
-};
+// type BasicArticleProps = {
+//   content: ArticleContent;
+// };
 
-function BasicArticle({ content }: BasicArticleProps) {
-  return (
-    <div>
-      <a href={content.link} target="_blank" rel="noreferrer">
-        <h4 className="text-2xl font-black text-[#ffbe0b] mb-5 cursor-pointer hover:text-amber-500">
-          {content.name}
-        </h4>
-      </a>
-      <p className="text-[#FFFFFF] opacity-60 mt-3">{content.desc}</p>
-      <hr className="my-5" />
-    </div>
-  );
-}
+// function BasicArticle({ content }: BasicArticleProps) {
+//   return (
+//     <div>
+//       <a href={content.link} target="_blank" rel="noreferrer">
+//         <h4 className="text-2xl font-black text-[#ffbe0b] mb-5 cursor-pointer hover:text-amber-500">
+//           {content.name}
+//         </h4>
+//       </a>
+//       <p className="text-[#FFFFFF] opacity-60 mt-3">{content.desc}</p>
+//       <hr className="my-5" />
+//     </div>
+//   );
+// }
 
 type ArticlesProps = {
   data: ArticleContent[];
