@@ -17,9 +17,13 @@ connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', 5672,
 
 channel = connection.channel()
 
+args = {"x-message-ttl": 60000}
+
 # Declare queues that this consumer will listen to
-channel.queue_declare(queue='articles')
-channel.queue_declare(queue='articles2')
+channel.queue_delete(queue='articles')
+channel.queue_delete(queue='articles2')
+channel.queue_declare(queue='articles',arguments=args)
+channel.queue_declare(queue='articles2',arguments=args)
 
 # Set up consumption from both queues
 # The 'callback' function is registered here to be called whenever a message is received

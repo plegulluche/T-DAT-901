@@ -31,9 +31,14 @@ connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', 5672,
 
 channel = connection.channel()
 
+# Passing TTL arg to queues to persist the messages in the queue
+args = {"x-message-ttl": 60000} 
+
 # Declare a queue
-channel.queue_declare(queue='articles')
-channel.queue_declare(queue='articles2')
+channel.queue_delete(queue='articles')
+channel.queue_delete(queue='articles2')
+channel.queue_declare(queue='articles', arguments=args)
+channel.queue_declare(queue='articles2', arguments=args)
 
 
 while True:  # Infinite loop for continuous sending
