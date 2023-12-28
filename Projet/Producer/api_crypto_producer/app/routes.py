@@ -26,3 +26,6 @@ def get_coins_list():
     else:
         return jsonify({"error": "Failed to fetch data"}), response.status_code
     
+@app.route('/api/v2/history_by_day_simple', method=['GET'])
+def get_coin_data():
+    pass
