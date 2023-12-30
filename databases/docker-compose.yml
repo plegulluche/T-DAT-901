@@ -1,0 +1,12 @@
+version: '3'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: tdat901_nontemporal
+      POSTGRES_USER: t_dat_admin
+      POSTGRES_PASSWORD: tdat+901
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
