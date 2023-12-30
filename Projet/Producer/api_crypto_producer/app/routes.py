@@ -25,7 +25,11 @@ def get_coins_list():
         return jsonify(coins_data), 200
     else:
         return jsonify({"error": "Failed to fetch data"}), response.status_code
-    
-@app.route('/api/v2/history_by_day_simple', method=['GET'])
+
+@app.route('/api/v2/enum-coins', methods=['GET'])
+def enum_coins():
+    pass
+
+@app.route('/api/v2/history_by_day_simple', methods=['GET'])
 def get_coin_data():
     pass
