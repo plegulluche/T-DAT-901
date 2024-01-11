@@ -2,6 +2,7 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from producer.spiders.crypto_news1 import CryptoSpider
 from producer.spiders.crypto_news2 import CryptoNewsSpider
+from producer.spiders.crypto_news3 import CryptoBlockSpider
 import sys
 
 def main():
@@ -24,6 +25,8 @@ def main():
     process.crawl(CryptoSpider, **spider_args)
 
     process.crawl(CryptoNewsSpider)
+    
+    process.crawl(CryptoBlockSpider)
 
     process.start()
 
