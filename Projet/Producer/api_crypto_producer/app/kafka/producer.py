@@ -7,5 +7,12 @@ producer = KafkaProducer(
 )
 
 def send_to_kafka(topic, message):
-    print("DEBUG PRODUCER : ", topic)
-    producer.send(topic, message)
+    print("DEBUG PRODUCER : Sending message to topic", topic)
+    future = producer.send(topic, message)
+    try:
+        record_metadata = future.get(timeout=10)
+        print("Message sent to topic:", record_metadata.topic)
+        print("Partition:", record_metadata.partition)
+        print("Offset:", record_metadata.offset)
+    except Exception as e:
+        print("Error sending message:", e)
