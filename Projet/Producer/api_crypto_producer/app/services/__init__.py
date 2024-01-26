@@ -1,1 +1,1 @@
-from app.services.coin_service import get_coins_list_service
+from app.services.coin_service import fetch_and_batch_coin_list, fetch_and_send_coin_price

@@ -1,38 +1,65 @@
 import os
 import requests
-from app.kafka.producer import send_to_kafka
+import json
+import threading
+import time
+import datetime
+import uuid
+
 
 from dotenv import load_dotenv
 
 load_dotenv()
-
+COIN_SYMBOLS= ["BTC", "ETH"]
 API_KEY = os.getenv('CRYPTO_COMPARE_API_KEY')
-API_BASE_URL= os.getenv('API_BASE_URLAPI_BASE_URL_CRYPTO_COMPARE')
+API_BASE_URL= os.getenv('API_BASE_URL_CRYPTO_COMPARE')
 
 # Method to get the list of all coins and theyr id , use the symbol from the response
 # on each coin to call get_price_for_coin()
-def get_coins_list_service():
+def fetch_and_batch_coin_list():
     endpoint = f'/all/coinlist?summary=true&api_key={API_KEY}'
     url = f"{API_BASE_URL}{endpoint}"
+    print("DEBUG1  URL : ", url)
     response = requests.get(url)
     if response.status_code == 200:
-        coins_data = response.json()
-        # Batching
-        batch_size = 20
-        for i in range(0, len(coins_data), batch_size):
-            batch = coins_data[i:i+batch_size]
-            send_to_kafka('crypto_topic', batch)  # Send each batch
-        return coins_data, 200
+        coins = response.json()['Data']
+        # Assuming a batch size of 100 for example
+        batch_size = 100
+        for i in range(0, len(coins), batch_size):
+            batch = dict(list(coins.items())[i:i + batch_size])
+            print("coin list retrieved")  # Replace with Kafka send later
     else:
-        return {"error": "Failed to fetch data"}, response.status_code
+        print("Failed to fetch coin list")
 
-def get_price_for_coin(coin_symbol):
-    endpoint= f'price?fsym={coin_symbol}&tsyms=USD,JPY,EUR&api_key={API_KEY}'
-    url= f'{API_BASE_URL}{endpoint}'
-    response= requests.get(url)
-    if response.status_code == 200:
-        coins_data = response.json()
-        send_to_kafka({coin_symbol}, coins_data)
-        return {"message": f"Data sent to topic {coin_symbol}"}
-    else:
-        return {"error": "Failed to fetch data"}, response.status_code
+# Call this function at Flask app startup
+fetch_and_batch_coin_list()
+
+def fetch_and_send_coin_price():  
+    previous_prices = {}
+    while True:
+        for coin in ['BTC', 'ETH']:
+            endpoint= f'/price?fsym={coin}&tsyms=USD,JPY,EUR&api_key={API_KEY}'
+            url= f'{API_BASE_URL}{endpoint}'
+            print("DEBUG URL : ", url)
+            response = requests.get(url)
+            if response.status_code == 200:
+                current_price = response.json()
+                if coin not in previous_prices or previous_prices[coin] != current_price:
+                    previous_prices[coin] = current_price
+                    data = {
+                        "key": {
+                            "id": str(uuid.uuid4())
+                        },
+                        "value": {
+                            "timestamp": str(datetime.datetime.utcnow().isoformat()),
+                            "crypto": coin,
+                            "price": current_price
+                        }
+                    }
+                    print(json.dumps(data))  # Replace with Kafka send later
+            else:
+                print(f"Failed to fetch price for {coin}")
+        time.sleep(10)
+
+# Start this function in a background thread
+threading.Thread(target=fetch_and_send_coin_price, daemon=True).start()

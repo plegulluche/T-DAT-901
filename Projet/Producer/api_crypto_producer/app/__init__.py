@@ -1,15 +1,11 @@
 from flask import Flask
-from dotenv import load_dotenv
-
-load_dotenv()
-
+from app.services.coin_service import fetch_and_batch_coin_list, fetch_and_send_coin_price
+import threading
 
 app = Flask(__name__)
 
-# Importing routes
-from .routes import coin_routes
+# Call the fetch and batch function
+fetch_and_batch_coin_list()
 
-# Registering blueprints
-app.register_blueprint(coin_routes)
-
-# Any other app configuration can go here
+# Start the background thread for continuous price fetching
+threading.Thread(target=fetch_and_send_coin_price, daemon=True).start()
