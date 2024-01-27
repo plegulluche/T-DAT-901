@@ -6,6 +6,8 @@ import time
 import datetime
 import uuid
 
+from app.kafka.producer import send_to_kafka
+
 
 from dotenv import load_dotenv
 
@@ -19,7 +21,6 @@ API_BASE_URL= os.getenv('API_BASE_URL_CRYPTO_COMPARE')
 def fetch_and_batch_coin_list():
     endpoint = f'/all/coinlist?summary=true&api_key={API_KEY}'
     url = f"{API_BASE_URL}{endpoint}"
-    print("DEBUG1  URL : ", url)
     response = requests.get(url)
     if response.status_code == 200:
         coins = response.json()['Data']
@@ -27,7 +28,7 @@ def fetch_and_batch_coin_list():
         batch_size = 100
         for i in range(0, len(coins), batch_size):
             batch = dict(list(coins.items())[i:i + batch_size])
-            print("coin list retrieved")  # Replace with Kafka send later
+            send_to_kafka('coin_list', batch)  # Replace with Kafka send later
     else:
         print("Failed to fetch coin list")
 
@@ -40,7 +41,6 @@ def fetch_and_send_coin_price():
         for coin in ['BTC', 'ETH']:
             endpoint= f'/price?fsym={coin}&tsyms=USD,JPY,EUR&api_key={API_KEY}'
             url= f'{API_BASE_URL}{endpoint}'
-            print("DEBUG URL : ", url)
             response = requests.get(url)
             if response.status_code == 200:
                 current_price = response.json()
@@ -56,7 +56,7 @@ def fetch_and_send_coin_price():
                             "price": current_price
                         }
                     }
-                    print(json.dumps(data))  # Replace with Kafka send later
+                    send_to_kafka(coin + '_price', data)
             else:
                 print(f"Failed to fetch price for {coin}")
         time.sleep(10)

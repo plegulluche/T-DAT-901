@@ -7,6 +7,9 @@ WORKDIR /usr/src/app
 # Copy the current directory contents into the container at /usr/src/app
 COPY . /usr/src/app
 
+# Set execute permissions for the start script
+RUN chmod +x /usr/src/app/start_app.sh
+
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -17,5 +20,10 @@ EXPOSE 5000
 ENV FLASK_APP=app
 ENV FLASK_ENV=development
 
+# Uncoment the lines if you prefer automatic launch or custom switch
+
+# CMD to keep the container running without starting the Flask app
+CMD ["tail", "-f", "/dev/null"]
+
 # Run app.py when the container launches
-CMD ["flask", "run", "--host=0.0.0.0"]
+# CMD ["flask", "run", "--host=0.0.0.0"]
