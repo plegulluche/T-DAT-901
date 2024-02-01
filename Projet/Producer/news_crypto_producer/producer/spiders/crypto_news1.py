@@ -1,6 +1,6 @@
 import scrapy
-import json
-import os
+
+from kafka_helpers import send_to_kafka
 
 class CryptoSpider(scrapy.Spider):
     """
@@ -31,8 +31,6 @@ class CryptoSpider(scrapy.Spider):
         self.max_page = int(max_page) if max_page is not None else 1
         self.actual_page = 1
 
-        if os.path.exists('news1.json'):
-            os.remove('news1.json')
 
     def start_requests(self):
         """
@@ -107,14 +105,16 @@ class CryptoSpider(scrapy.Spider):
             'content': content,
         }
 
-        with open('news1.json', 'a', encoding='utf-8') as json_file:
-            if os.path.getsize('news1.json') == 0:
-                json_file.write('[')
-            else:
-                json_file.write(',')
+        send_to_kafka('crypto_articles', data)
 
-            json.dump(data, json_file, ensure_ascii=False, indent=2)
-            json_file.write('\n')
+        # with open('news1.json', 'a', encoding='utf-8') as json_file:
+        #     if os.path.getsize('news1.json') == 0:
+        #         json_file.write('[')
+        #     else:
+        #         json_file.write(',')
+
+        #     json.dump(data, json_file, ensure_ascii=False, indent=2)
+        #     json_file.write('\n')
 
         yield data
             
@@ -136,13 +136,3 @@ class CryptoSpider(scrapy.Spider):
             failure (twisted.python.failure.Failure): The failure instance containing the error.
         """
         self.logger.error(f"Request failed for article link: {failure.request.url}, Error: {failure.value}")
-        
-    def closed(self, reason):
-        """
-        Finalizes the JSON file when the spider is closed.
-
-        Args:
-            reason (str): The reason why the spider was closed.
-        """
-        with open('news1.json', 'a', encoding='utf-8') as json_file:
-            json_file.write(']')

@@ -1,6 +1,6 @@
 import scrapy
-import json
-import os
+
+from kafka_helpers import send_to_kafka
 
 class CryptoNewsSpider(scrapy.Spider):
     """
@@ -18,8 +18,6 @@ class CryptoNewsSpider(scrapy.Spider):
         'ROBOTSTXT_OBEY': False
     }
 
-    if os.path.exists('news2.json'):
-        os.remove('news2.json')
         
     def start_requests(self):
         """
@@ -88,14 +86,16 @@ class CryptoNewsSpider(scrapy.Spider):
             'content': content,
         }
 
-        with open('news2.json', 'a', encoding='utf-8') as json_file:
-            if os.path.getsize('news2.json') == 0:
-                json_file.write('[')
-            else:
-                json_file.write(',')
+        send_to_kafka('new2', data)
 
-            json.dump(data, json_file, ensure_ascii=False, indent=2)
-            json_file.write('\n')
+        # with open('news2.json', 'a', encoding='utf-8') as json_file:
+        #     if os.path.getsize('news2.json') == 0:
+        #         json_file.write('[')
+        #     else:
+        #         json_file.write(',')
+
+        #     json.dump(data, json_file, ensure_ascii=False, indent=2)
+        #     json_file.write('\n')
 
         yield data
 
@@ -117,12 +117,3 @@ class CryptoNewsSpider(scrapy.Spider):
         """
         self.logger.error(f"Request failed for article link: {failure.request.url}, Error: {failure.value}")
 
-    def closed(self, reason):
-        """
-        Finalizes the JSON file when the spider is closed.
-
-        Args:
-            reason (str): The reason why the spider was closed.
-        """
-        with open('news2.json', 'a', encoding='utf-8') as json_file:
-            json_file.write(']')
