@@ -1,0 +1,76 @@
+trigger:
+- main
+steps:
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here
+      echo "Structure of work folder of this pipeline:"
+      ls -R $(Agent.WorkFolder)\1 /f
+      
+      echo "Build.ArtifactStagingDirectory:" 
+      
+      ls -R "$(Build.ArtifactStagingDirectory)"
+      
+      echo "Build.BinariesDirectory:" 
+      
+      ls -R "$(Build.BinariesDirectory)"
+      
+      echo "Build.SourcesDirectory:"
+      
+      ls -R "$(Build.SourcesDirectory)"
+- task: Npm@1
+  inputs:
+    command: 'ci'
+    workingDir: './api'
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    workingDir: './api'
+    customCommand: 'run swagger-autogen'
+    customRegistry: 'useFeed'
+    customFeed: 'c9a9bd8b-414e-46a4-992f-2c46336beca8'
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # this is inline code
+      env | sort
+  
+- task: Docker@2
+  inputs:
+    containerRegistry: 'countmoneycontainerregistry-push'
+    command: 'login'
+
+- task: CmdLine@2
+  inputs:
+    script: |
+      docker pull redislabs/redismod
+      docker tag redislabs/redismod countmoneycontainerregistry.azurecr.io/cm-redis:latest
+- task: Docker@2
+  inputs:
+    command: 'push'
+    repository: cm-redis
+    tags: 'latest'
+
+- task: DockerCompose@0
+  displayName: Container registry login
+  inputs:
+    containerregistrytype: Azure Container Registry
+    azureSubscription: 'Azure for Students'
+    azureContainerRegistry: '{"loginServer":"countmoneycontainerregistry.azurecr.io", "id" : "/subscriptions/f513c94f-984b-4b85-9810-cd848d2eeee6/resourceGroups/cm-rg-dev/providers/Microsoft.ContainerRegistry/registries/countmoneycontainerregistry"}'
+    dockerComposeFile: 'docker-compose.yml'
+    action: 'Run a Docker Compose command'
+    dockerComposeCommand: 'build --no-cache'
+
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: Azure Container Registry
+    azureSubscription: 'Azure for Students'
+    azureContainerRegistry: '{"loginServer":"countmoneycontainerregistry.azurecr.io", "id" : "/subscriptions/f513c94f-984b-4b85-9810-cd848d2eeee6/resourceGroups/cm-rg-dev/providers/Microsoft.ContainerRegistry/registries/countmoneycontainerregistry"}'
+    dockerComposeFile: 'docker-compose.yml'
+    action: Push services
+    includeSourceTags: true
+    includeLatestTag: true

@@ -1,0 +1,1329 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Count of Money API",
+    "version": "1.0.0",
+    "description": ""
+  },
+  "host": "localhost:8080/api",
+  "basePath": "/",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register a new user",
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User to register",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "required": [
+                "username",
+                "email",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login a user",
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User to login",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "required": [
+                "email",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Logout a user",
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/user/": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get all users",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get user by id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user/get-user-roles/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get user roles by user id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user/add-user-roles/{id}": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Add user roles by user id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User roles to add",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "roles": {
+                  "type": "array",
+                  "example": [
+                    "string"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "roles"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user/remove-user-roles/{id}": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Remove user roles by user id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User roles to remove",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "roles": {
+                  "type": "array",
+                  "example": [
+                    "string"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "roles"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user-preferences/": {
+      "get": {
+        "tags": [
+          "User Preferences"
+        ],
+        "summary": "Get all user preferences",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user-preferences/get-all-from-user/{id}": {
+      "get": {
+        "tags": [
+          "User Preferences"
+        ],
+        "summary": "Get all user preferences from user id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user-preferences/create-preference/": {
+      "post": {
+        "tags": [
+          "User Preferences"
+        ],
+        "summary": "Create a new user preference",
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User preference to create",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "theme": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "language": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "required": [
+                "userId",
+                "theme",
+                "language"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user-keywords/": {
+      "get": {
+        "tags": [
+          "User Keywords"
+        ],
+        "summary": "Get all user keywords",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user-keywords/get-all-from-user/{id}": {
+      "get": {
+        "tags": [
+          "User Keywords"
+        ],
+        "summary": "Get all user keywords from user id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user-keywords/get-all-by-keyword/{id}": {
+      "get": {
+        "tags": [
+          "User Keywords"
+        ],
+        "summary": "Get all user keywords from keyword id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user-keywords/add-user-keyword/": {
+      "post": {
+        "tags": [
+          "User Keywords"
+        ],
+        "summary": "Add a new user keyword",
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User keyword to add",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "keywordId": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "required": [
+                "userId",
+                "keywordId"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user-keywords/delete-by-id/{id}": {
+      "delete": {
+        "tags": [
+          "User Keywords"
+        ],
+        "summary": "Delete a user keyword by id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user-keywords/delete-by-name/{name}": {
+      "delete": {
+        "tags": [
+          "User Keywords"
+        ],
+        "summary": "Delete a user keyword by name",
+        "description": "",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user-keywords/delete-all-from-user/{id}": {
+      "delete": {
+        "tags": [
+          "User Keywords"
+        ],
+        "summary": "Delete all user keywords from user id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/keywords/": {
+      "get": {
+        "tags": [
+          "Keywords"
+        ],
+        "summary": "Get all keywords",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/keywords/{id}": {
+      "get": {
+        "tags": [
+          "Keywords"
+        ],
+        "summary": "Get keyword by id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/keywords/get-one-by-name/{name}": {
+      "get": {
+        "tags": [
+          "Keywords"
+        ],
+        "summary": "Get keyword by name",
+        "description": "",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/keywords/create": {
+      "post": {
+        "tags": [
+          "Keywords"
+        ],
+        "summary": "Create a new keyword",
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Keyword to create",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "keyword": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "required": [
+                "keyword"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/keywords/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Keywords"
+        ],
+        "summary": "Delete keyword by id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/keywords/delete-by-name/{name}": {
+      "delete": {
+        "tags": [
+          "Keywords"
+        ],
+        "summary": "Delete keyword by name",
+        "description": "",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user-crypto-list/": {
+      "get": {
+        "tags": [
+          "User Crypto List"
+        ],
+        "summary": "Get all user cryptos",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user-crypto-list/{id}": {
+      "get": {
+        "tags": [
+          "User Crypto List"
+        ],
+        "summary": "Get user crypto list by id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user-crypto-list/get-all-from-user/{id}": {
+      "get": {
+        "tags": [
+          "User Crypto List"
+        ],
+        "summary": "Get all user cryptos from user id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user-crypto-list/add-crypto-to-user/": {
+      "post": {
+        "tags": [
+          "User Crypto List"
+        ],
+        "summary": "Add crypto to user crypto list",
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User crypto list to add",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "cryptoId": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "required": [
+                "userId",
+                "cryptoId"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user-crypto-list/delete-by-id/{id}": {
+      "delete": {
+        "tags": [
+          "User Crypto List"
+        ],
+        "summary": "Delete a user crypto by id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user-crypto-list/delete-by-name/{name}": {
+      "delete": {
+        "tags": [
+          "User Crypto List"
+        ],
+        "summary": "Delete a user crypto by name",
+        "description": "",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/crypto-coins/update-crypto-details": {
+      "get": {
+        "tags": [
+          "Crypto Coins"
+        ],
+        "summary": "Update crypto details",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/crypto-coins/": {
+      "get": {
+        "tags": [
+          "Crypto Coins"
+        ],
+        "summary": "Get all crypto coins",
+        "description": "",
+        "parameters": [
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort type (marketCap, totalSupply, circulatingSupply)",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Sort by ascending or descending",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/crypto-coins/{id}": {
+      "get": {
+        "tags": [
+          "Crypto Coins"
+        ],
+        "summary": "Get crypto coin by id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/crypto-coins/get-one-by-name/{name}": {
+      "get": {
+        "tags": [
+          "Crypto Coins"
+        ],
+        "summary": "Get crypto coin by name",
+        "description": "",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/crypto-coins/create": {
+      "post": {
+        "tags": [
+          "Crypto Coins"
+        ],
+        "summary": "Create a new crypto coin",
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Crypto coin to create",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "symbol": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "required": [
+                "name",
+                "symbol"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/crypto-coins/update-by-id/{id}": {
+      "put": {
+        "tags": [
+          "Crypto Coins"
+        ],
+        "summary": "Update crypto coin by id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Crypto coin to update",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "symbol": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "required": [
+                "name",
+                "symbol"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/crypto-coins/update-by-name/{name}": {
+      "put": {
+        "tags": [
+          "Crypto Coins"
+        ],
+        "summary": "Update crypto coin by name",
+        "description": "",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Crypto coin to update",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "symbol": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "required": [
+                "name",
+                "symbol"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/crypto-coins/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Crypto Coins"
+        ],
+        "summary": "Delete crypto coin by id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/crypto-coins/toggle-popular/{id}": {
+      "post": {
+        "tags": [
+          "Crypto Coins"
+        ],
+        "summary": "Toggle popular crypto coin by id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Toggle popular coin ",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "isPopular": {
+                  "type": "string",
+                  "example": "boolean"
+                }
+              },
+              "required": [
+                "isPopular"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/crypto-coins/update-cryptocoins-with-crypto-details": {
+      "post": {
+        "tags": [
+          "Crypto Coins"
+        ],
+        "summary": "Update crypto market circulating",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/popular-crypto/": {
+      "get": {
+        "tags": [
+          "Popular Crypto"
+        ],
+        "summary": "Get all popular cryptos",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/popular-crypto/create": {
+      "post": {
+        "tags": [
+          "Popular Crypto"
+        ],
+        "summary": "Create a new popular crypto",
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Popular crypto to create",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cryptoId": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "required": [
+                "cryptoId"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/popular-crypto/delete-by-id/{popularCryptoId}": {
+      "delete": {
+        "tags": [
+          "Popular Crypto"
+        ],
+        "summary": "Delete a popular crypto by cryptoId",
+        "description": "",
+        "parameters": [
+          {
+            "name": "popularCryptoId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "popularCryptoId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/popular-crypto/get-popular-trading-pairs": {
+      "get": {
+        "tags": [
+          "Popular Crypto"
+        ],
+        "summary": "Get all popular trading pairs",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "apis": [
+    "./routes/auth.routes.js",
+    "./routes/user.routes.js",
+    "./routes/userPreferences.routes.js",
+    "./routes/userKeywords.routes.js",
+    "./routes/keywords.routes.js",
+    "./routes/userCryptoList.routes.js",
+    "./routes/cryptoCoins.routes.js",
+    "./routes/popularCrypto.routes.js"
+  ]
+}

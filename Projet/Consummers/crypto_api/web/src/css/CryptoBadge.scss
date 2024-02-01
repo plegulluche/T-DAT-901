@@ -1,0 +1,32 @@
+.crypto-animation{
+    background-color: #3A3A3A;
+}
+
+.crypto-animation_green{
+    background-color: #5fd963;
+    animation: flash-green 2s forwards;
+}
+
+.crypto-animation_red{
+    background-color: #f73653;
+    transition: background-color 0.5s;
+    animation: flash-red 2s forwards;
+}
+
+@keyframes flash-green{
+    0% {
+      background: #5fd963;
+    }
+    100% {
+      background: #3A3A3A;
+    }
+  }
+
+  @keyframes flash-red{
+    0% {
+      background: #f73653;
+    }
+    100% {
+      background: #3A3A3A;
+    }
+  }
