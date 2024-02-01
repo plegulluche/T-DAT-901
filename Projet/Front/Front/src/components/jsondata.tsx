@@ -14,10 +14,10 @@ type JsondataProps = {
   keywords: string[];
 };
 
-export default function Jsondata({ keywords }: JsondataProps) {
+export default function Jsondata({ keywords: any }: JsondataProps) {
   // Specify the type of state as an array of Article
   const [recentBlogPost, setRecentBlogPost] = useState<Article[]>([]);
-  console.log(keywords)
+  // console.log(keywords);
   // Simulating user keywords with hardcoded data
   const keywords = ["crypto", "bitcoin", "ethereum", "dogecoin"];
 
