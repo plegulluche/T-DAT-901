@@ -7,9 +7,9 @@ export default function NewsPage() {
 
   return (
     <div className="flex p-5 gap-5">
-      <NewsKeywordsManagement keywords={keywords} setKeywords={setKeywords} />
-      <div className="flex bg-[#1B1B1B] rounded-lg w-full">
-        <Jsondata keywords={keywords} />
+      <NewsKeywordsManagement />
+      <div className="flex w-full bg-[#1B1B1B] rounded-lg ml-[360px]">
+        <Jsondata />
       </div>
     </div>
   );

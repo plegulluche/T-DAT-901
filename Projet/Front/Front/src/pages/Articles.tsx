@@ -13,7 +13,7 @@ type MainArticleProps = {
 
 function MainArticle({ content }: MainArticleProps) {
   return (
-    <div className="bg-[#3A3A3A] w-[840px] p-5 rounded-lg mb-5">
+    <div className="w-[840px] p-5 rounded-lg mb-5">
       <div className="w-full">
         <img
           src={content.image}
