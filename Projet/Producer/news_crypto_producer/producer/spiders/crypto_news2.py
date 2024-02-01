@@ -102,7 +102,7 @@ class CryptoNewsSpider(scrapy.Spider):
             'content': content,
         }
 
-        send_to_kafka('new2', data)
+        send_to_kafka('news2', data)
 
         # with open('news2.json', 'a', encoding='utf-8') as json_file:
         #     if os.path.getsize('news2.json') == 0:

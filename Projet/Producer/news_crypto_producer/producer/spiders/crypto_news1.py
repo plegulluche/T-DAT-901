@@ -123,15 +123,6 @@ class CryptoSpider(scrapy.Spider):
 
         send_to_kafka('news1', data)
 
-        # with open('news1.json', 'a', encoding='utf-8') as json_file:
-        #     if os.path.getsize('news1.json') == 0:
-        #         json_file.write('[')
-        #     else:
-        #         json_file.write(',')
-
-        #     json.dump(data, json_file, ensure_ascii=False, indent=2)
-        #     json_file.write('\n')
-
         yield data
             
     def errback_site_address(self, failure):
