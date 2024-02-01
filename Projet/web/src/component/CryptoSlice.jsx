@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function CryptoSlice(props) {
     const { name, symbol, logoUrl, id } = props;
+    console.log()
     return (
         <div>
             <Link to={`/crypto/${id}`}>

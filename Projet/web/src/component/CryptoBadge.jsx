@@ -43,8 +43,9 @@ export default function CryptoBadge({ symbol, index, websocketDataAggregation })
                         <div className="justify-end">
                             <p className="mb-1 text-[14px] text-[#9F9F9F]">Amount</p>
                             {tab.current.map(elem => {
+                                // console.log(elem.lastQuantity)
                                 return (
-                                    <p className="text-[12px]">{elem.lastQuantity && elem.lastQuantity}</p>
+                                    <p className="text-[12px]">{elem.lastQuantity && parseFloat(elem.lastQuantity).toFixed(2)}</p>
                                 )
                             })}
                         </div>

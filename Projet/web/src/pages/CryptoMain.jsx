@@ -2,17 +2,28 @@ import React, {useState, useEffect} from 'react';
 import '../css/CryptoMain.scss';
 import requests from '../api/Requests.js';
 import axios from 'axios';
-import CryptoSlice from '../component/CryptoSlice.jsx';
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { useUserContext } from '../component/UserContext';
+import * as Table from "../component/table.jsx";
+
+export function formatNumber(number) {
+    if (number < 1000000) {
+      return `$${number.toFixed(2)}`;
+    } else if (number < 1000000000) {
+      return `$${(number / 1000000).toFixed(1)} M`;
+    } else {
+      return `$${(number / 1000000000).toFixed(2)} B`;
+    }
+  }
+  
 
 export default function CryptoMain({}) {
 
     const [cryptoData, setCryptoData] = useState([]);
-    const [reset, setReset] = useState(false);
     const userData = useSelector((state) => state.userReducer)
     const {getUser} = useUserContext()
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (getUser() === 'anonymous') {
@@ -60,38 +71,52 @@ export default function CryptoMain({}) {
     }
     }, [userData]);
 
-    
-    function loadMore() {
-        // const request = requests.apiUrl + pages?.next.url;
-
-        // axios.get(request)
-        // .then((response) => {
-        //     setCryptoData(response.data.cryptoCoins);
-        //     setPages({next: response.data.pages[1], prev: response.data.pages[0]});
-        // })
-        // .catch((error) => {
-        //     console.log(error);
-        // })
-    }
-
-
+        console.log(cryptoData)
     return (
         <div className='min-h-screen w-full mt-10 xl:px-[150px] px-[100px]'>
-            <div className="flex flex-col mt-5">
-                <p className='text-3xl text-white mb-10'>Select crypto </p>
-                <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
-                    {cryptoData?.slice(0, 10).map((crypto, index) => (
-                        <CryptoSlice key={index} name={crypto.name} symbol={crypto.symbol} logoUrl={crypto.logoUrl} id={crypto._id}/>
-                    ))}
-                </div>
-                <div className='flex self-center items-center mt-5'>
-                    <button className="h-fit bg-[#545454] text-gray-300 hover:opacity-80 font-bold px-10 py-3 rounded-lg" onClick={()=> setReset(!reset)}>
-                        Reset
-                    </button>          
-                    <button className="h-fit m-5 bg-[#545454] text-gray-300 hover:opacity-80 font-bold px-10 py-3 rounded-lg" onClick={loadMore}>
-                        Next page
-                    </button>
-                </div>   
+            <div className="flex flex-col">
+                <p className='text-2xl text-white mb-4 font-normal'>Your Favorite Cryptos</p>
+                <div className='bg-black/30 p-4 rounded-lg min-h-[600px]'>
+                    <Table.Table>
+                    <Table.Thead>
+                        <Table.Tr className="border-none">
+                        <Table.Th className="border-none w-[3%] text-gray-400 text-xs font-semibold">#</Table.Th>
+                        <Table.Th className="border-none w-[15%] text-gray-400 text-xs font-semibold">NAME</Table.Th>
+                        <Table.Th className=" border-none w-[20%] text-gray-400 text-xs font-semibold">SYMBOL</Table.Th>
+                        <Table.Th className=" border-none w-[30%] text-gray-400 text-xs font-semibold">MARKETCAP</Table.Th>
+                        <Table.Th className=" border-none w-1/5 text-gray-400 text-xs font-semibold">TOTAL SUPPLY</Table.Th>
+                        </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>
+                        {cryptoData?.slice(0, 10).map((crypto, index) => (
+                        <Table.Tr key={crypto.name} className="text-gray-100 border-gray-700 border-r-none border-l-none font-normal hover:cursor-pointer hover:bg-black/20" onClick={() => navigate(`/crypto/${crypto._id}`)}>
+                            <Table.Td className="border-none"><p>
+                                {index}
+                                </p>
+                            </Table.Td>
+                            <Table.Td className="border-none"><p>
+                                {crypto.name}
+                                </p>
+                            </Table.Td>
+                            <Table.Td className="border-none">
+                                {crypto.symbol}
+                            </Table.Td>
+                            <Table.Td className="border-none">
+                                {formatNumber(crypto.marketCap.toFixed(2))}
+                            </Table.Td>
+                            <Table.Td className="border-none">
+                                {formatNumber(crypto.totalSupply.toFixed(2))}
+                            </Table.Td>
+                            <Table.Td className="border-none py-3 text-end">
+                                <button className='py-2 px-5 bg-amber-700 rounded-lg' onClick={() => navigate(`/crypto/${crypto._id}`, {crypto})}>
+                                    Trade
+                                </button>
+                            </Table.Td>
+                        </Table.Tr>
+                                ))}
+                    </Table.Tbody>
+                    </Table.Table>
+                    </div>
             </div>
             <Outlet />
         </div>
