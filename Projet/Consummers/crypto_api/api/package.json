@@ -36,6 +36,7 @@
     "mongoose": "^6.7.2",
     "nodemon": "^2.0.20",
     "open": "^8.4.0",
+    "react-modal": "^3.16.1",
     "redis": "^4.5.1",
     "swagger-autogen": "^2.22.0",
     "swagger-ui-express": "^4.6.0",

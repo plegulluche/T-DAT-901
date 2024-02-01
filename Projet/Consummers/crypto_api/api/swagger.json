@@ -155,6 +155,46 @@
         }
       }
     },
+    "/count/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/user/get-user-roles/{id}": {
       "get": {
         "tags": [
@@ -895,7 +935,7 @@
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort type (marketCap, totalSupply, circulatingSupply)",
+            "description": "Sort type (marketCap, totalSupply, circulatingSupply, isPopular)",
             "required": false,
             "type": "string"
           },
@@ -1273,18 +1313,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "popularCryptoId": {
-                  "example": "any"
-                }
-              }
-            }
           }
         ],
         "responses": {
@@ -1314,6 +1342,24 @@
           }
         }
       }
+    },
+    "/test/test-performance": {
+      "get": {
+        "tags": [
+          "Test performance"
+        ],
+        "summary": "Test performance",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
   "apis": [
@@ -1324,6 +1370,7 @@
     "./routes/keywords.routes.js",
     "./routes/userCryptoList.routes.js",
     "./routes/cryptoCoins.routes.js",
-    "./routes/popularCrypto.routes.js"
+    "./routes/popularCrypto.routes.js",
+    "./routes/test.routes.js"
   ]
 }
