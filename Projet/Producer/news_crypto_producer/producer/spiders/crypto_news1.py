@@ -69,11 +69,11 @@ class CryptoSpider(scrapy.Spider):
         Yields:
             scrapy.Request: Requests for individual news articles.
         """
-        articles = response.css('div[id^="post-"]')
+        articles = response.css('.col-lg-3.d-flex .news-one')
         for article in articles:
-            title = article.css('.article__title::text').get()
-            link = article.css('h4 a::attr(href)').get()
-            source = article.css('.article__badge--sm a::text').get()
+            title = article.css('.news-one-title a.article__title--md::text').get()
+            link = article.css('a::attr(href)').get()
+            source = article.css('.news-one-category::text').get()
 
             if link:
                 yield scrapy.Request(
@@ -102,7 +102,7 @@ class CryptoSpider(scrapy.Spider):
         title = response.meta['title']
         source = response.meta['source']
         raw_date = response.css('time::text').get()
-        cleaned_date = " ".join(raw_date.strip().split())
+        cleaned_date = " ".join(raw_date.strip().split()) if raw_date else None
 
         content_elements = response.css('.article-single__content p, .article-single__content h2 strong')
 
