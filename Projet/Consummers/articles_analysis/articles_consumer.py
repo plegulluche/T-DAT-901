@@ -49,6 +49,8 @@ def main():
     vader = SentimentIntensityAnalyzer()
     
     analysis_results = []
+    first_articles = []
+    crypto_sentiment_scores = {}
 
     with open('articles.json', 'r') as f:
         articles = json.load(f)
@@ -59,19 +61,42 @@ def main():
             score = vader.polarity_scores(text)
             
             sentiment = "Neutral"
+            sentiment_value = 0
             if score['compound'] > 0.5:
                 sentiment = "Positive"
+                sentiment_value = 1
             elif score['compound'] < -0.5:
                 sentiment = "Negative"
+                sentiment_value = -1
+            
+            if crypto_found not in crypto_sentiment_scores:
+                crypto_sentiment_scores[crypto_found] = sentiment_value
+            else:
+                crypto_sentiment_scores[crypto_found] += sentiment_value
             
             analysis_results.append({
                 "title": title,
                 "crypto": crypto_found,
                 "sentiment": sentiment,
             })
-    
+            
+            first_articles.append({
+                "crypto": crypto_found,
+                "sentiment": sentiment,
+            })
+    for crypto, score in crypto_sentiment_scores.items():
+        if score == 0:
+            crypto_sentiment_scores[crypto] = "Neutral"
+        elif score >= 1:
+            crypto_sentiment_scores[crypto] = "Positive"
+        elif score <= -1:
+            crypto_sentiment_scores[crypto] = "Negative"
     with open('articles_analysis.json', 'w') as outfile:
         json.dump(analysis_results, outfile, indent=4)
+    print("Analysis results saved to articles_analysis.json\n")
+    print("First Articles List:", first_articles)
+    print("\nCrypto Sentiment Scores:", crypto_sentiment_scores)
+
 
 if __name__ == "__main__":
     main()
