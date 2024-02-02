@@ -45,10 +45,8 @@ def main():
     nltk.download('vader_lexicon')
     
     cryptocurrencies = fetch_cryptocurrencies()
-    
     vader = SentimentIntensityAnalyzer()
     
-    analysis_results = []
     first_articles = []
     crypto_sentiment_scores = {}
 
@@ -56,47 +54,50 @@ def main():
         articles = json.load(f)
         for article in articles:
             crypto_found = find_crypto_in_article(article, cryptocurrencies)
-            title = article['title']
+            date = article.get('date', 'Unknown Date')
             text = ' '.join(article['content'])
             score = vader.polarity_scores(text)
             
             sentiment = "Neutral"
-            sentiment_value = 0
             if score['compound'] > 0.5:
                 sentiment = "Positive"
-                sentiment_value = 1
             elif score['compound'] < -0.5:
                 sentiment = "Negative"
-                sentiment_value = -1
             
             if crypto_found not in crypto_sentiment_scores:
-                crypto_sentiment_scores[crypto_found] = sentiment_value
+                crypto_sentiment_scores[crypto_found] = [{'date': date, 'sentiment': sentiment}]
             else:
-                crypto_sentiment_scores[crypto_found] += sentiment_value
-            
-            analysis_results.append({
-                "title": title,
-                "crypto": crypto_found,
-                "sentiment": sentiment,
-            })
+                crypto_sentiment_scores[crypto_found].append({'date': date, 'sentiment': sentiment})
             
             first_articles.append({
+                "date": date,
                 "crypto": crypto_found,
                 "sentiment": sentiment,
             })
-    for crypto, score in crypto_sentiment_scores.items():
-        if score == 0:
-            crypto_sentiment_scores[crypto] = "Neutral"
-        elif score >= 1:
-            crypto_sentiment_scores[crypto] = "Positive"
-        elif score <= -1:
-            crypto_sentiment_scores[crypto] = "Negative"
-    with open('articles_analysis.json', 'w') as outfile:
-        json.dump(analysis_results, outfile, indent=4)
-    print("Analysis results saved to articles_analysis.json\n")
-    print("First Articles List:", first_articles)
-    print("\nCrypto Sentiment Scores:", crypto_sentiment_scores)
 
+    final_scores = {}
+    for crypto, entries in crypto_sentiment_scores.items():
+        for entry in entries:
+            sentiment_score = 0
+            if entry['sentiment'] == "Positive":
+                sentiment_score = 1
+            elif entry['sentiment'] == "Negative":
+                sentiment_score = -1
+            if crypto not in final_scores:
+                final_scores[crypto] = {'date': entry['date'], 'crypto': crypto, 'sentiment': entry['sentiment']}
+            else:
+                if sentiment_score > 0 and final_scores[crypto]['sentiment'] != "Positive":
+                    final_scores[crypto] = {'date': entry['date'], 'crypto': crypto, 'sentiment': entry['sentiment']}
+                elif sentiment_score < 0 and final_scores[crypto]['sentiment'] != "Negative":
+                    final_scores[crypto] = {'date': entry['date'], 'crypto': crypto, 'sentiment': entry['sentiment']}
+
+    with open('first_articles.json', 'w') as outfile:
+        json.dump(first_articles, outfile, indent=4)
+    print("First articles saved to first_articles.json")
+
+    with open('crypto_sentiment_scores.json', 'w') as outfile:
+        json.dump(final_scores, outfile, indent=4)
+    print("Crypto sentiment scores saved to crypto_sentiment_scores.json")
 
 if __name__ == "__main__":
     main()
