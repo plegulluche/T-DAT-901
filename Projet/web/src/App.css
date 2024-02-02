@@ -6,11 +6,7 @@
   text-align: center;
   background-color: #252525  ;
 }
-@font-face {
-  font-family: "Custom-1";
-  src: url("fonts/LilitaOne-Regular.ttf");
 
-}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

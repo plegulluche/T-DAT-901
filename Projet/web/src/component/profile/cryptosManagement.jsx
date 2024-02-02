@@ -25,7 +25,7 @@ function CryptoCard({crypto, adding=false, addNewCrypto, deleteCrypto}) {
             onClick={() => adding ? addNewCrypto(crypto) : null}>
             <div className="flex items-center">
                 <img src={crypto.logoUrl} className="w-[27px] h-[3 0px] mr-5"></img>
-                <p className="text-gray-500 text-lg">{crypto.name}</p>
+                <p className="text-gray-300 text-lg">{crypto.name}</p>
             </div>
             {adding ? <p className="text-gray-500 text-3xl mb-2">+</p> : <p className="text-gray-500 text-xl mb-1 text-red-500" onClick={() => deleteCrypto(crypto)}>x</p>}
         </div>

@@ -72,8 +72,8 @@ export default function Profile({}) {
 
     return (
         <div className="min-h-screen w-full relative flex items-center justify-center z-20">
-            <div className="bg-[#3A3A3A] h-[650px] w-[1200px] z-20 rounded-lg shadow-2xl drop-shadow-xl p-[25px] flex flex-col justify-center">
-                <div className="bg-[#2E2E2E] w-full h-[110px] rounded-xl flex justify-between p-2">
+            <div className="bg-[#1C1C1C] h-[650px] w-[1200px] z-20 rounded-lg shadow-2xl drop-shadow-xl p-[25px] flex flex-col justify-center">
+                <div className="bg-[#262626] w-full h-[110px] rounded-xl flex justify-between p-2">
                     <div className="flex items-center">
                         <img src="./men.png" className="w-[100px] h-[100px] mr-2"></img>
                         <div>
@@ -90,15 +90,17 @@ export default function Profile({}) {
                     <div className="w-[2px] bg-[#525252] h-[70%]"></div>
                     <NewsKeywordsManagement user={userData}/>
                     <div className="w-[2px] bg-[#525252] h-[70%]"></div>
-                    <div className="flex flex-col items-center p-5 bg-[#3A3A3A] rounded-xl ml-10">
-                        <h1 className="text-gray-300 text-3xl mb-10">Configuration</h1>
-                        <div className="w-full px-5">
-                            <div className="flex flex-col justify-between items-center">
-                                <p className="text-xl text-gray-300 mb-3">News to display</p>
-                               {count && <ArticleNumberButton onChange={(number) => setCount(number)} count={count}/>}
+                    <div className="w-[70%] flex flex-col items-center rounded-xl mt-5">
+                        <h1 className="text-gray-300 text-2xl mb-5">Configuration</h1>
+                        <div className=" bg-[#262626] p-5 rounded-lg">
+                            <div className="w-full px-3">
+                                <div className="flex flex-col justify-between items-center">
+                                    <p className="text-lg text-gray-300 mb-3">News to display</p>
+                                {count && <ArticleNumberButton onChange={(number) => setCount(number)} count={count}/>}
+                                </div>
+                                <button className="h-fit bg-[#686868] hover:opacity-50 mt-5 text-white font-bold w-full px-10 py-2 rounded-lg"
+                                    onClick={() => onSaveNumber()}>Save</button>  
                             </div>
-                            <button className="h-fit bg-[#686868] hover:opacity-50 mt-5 text-white font-bold w-full px-10 py-2 rounded-lg"
-                                onClick={() => onSaveNumber()}>Save</button>  
                         </div>
                     </div>
                 </div>

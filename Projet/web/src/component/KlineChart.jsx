@@ -492,7 +492,7 @@ export default function KlineChart(props) {
 
   return (
     <Layout>
-      <div id="chart" className='bg-[#3A3A3A] w-[950px] h-[500px]' style={{ height: 500 }} />
+      <div id="chart" className='bg-[#3A3A3A] w-full h-[500px] rounded-lg' style={{ height: 500 }} />
       <div
         className="k-line-chart-menu-container">
         {

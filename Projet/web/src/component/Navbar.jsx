@@ -27,7 +27,7 @@ export default function Navbar({}) {
     }, [userData])
 
     return (
-        <div className="w-[80px] h-[80%] z-40 flex bg-[#3A3A3A] absolute left-0 top-[10%] hover:cursor-pointer hover:w-[250px] rounded-r-xl shadow-2xl drop-shadow-xl transition-width duration-300 truncate">
+        <div className="w-[80px] h-[80%] z-40 flex bg-[#171717] absolute left-0 top-[10%] hover:cursor-pointer hover:w-[220px] rounded-r-xl shadow-2xl drop-shadow-xl transition-width duration-300 truncate">
             <div className="h-full w-[80px] flex flex-col items-center">
                 <Link to="/">
                     <img src="/logo2.png" className='w-[70px] h-[43px] mt-5' />
@@ -51,7 +51,7 @@ export default function Navbar({}) {
             </div>
             <div className="h-[120px] w-fit flex flex-col items-center absolute left-20">
                 <div className="flex flex-col items-start mt-[25px]">
-                    <p className={`text-[22px] text-orange-400 font-bold ${getUser() === 'connected' ? 'mb-[68px]' : 'mb-[50px]'}`}>Crypto</p>
+                    <p className={`text-[22px] text-orange-400 font-bold ${getUser() === 'connected' ? 'mb-[68px]' : 'mb-[50px]'}`}>T-DAT</p>
                     {getUser() === 'connected' && <Link to="/profile" onClick={() => setHover('/profile')}>
                         <p className={`text-[20px] ${hover !== '/profile' ? "text-[#7d7d7d]" : "text-[#c18936]"} font-bold mb-[45px]`}>Profile</p>
                     </Link>}

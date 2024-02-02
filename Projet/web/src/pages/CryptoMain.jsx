@@ -71,12 +71,11 @@ export default function CryptoMain({}) {
     }
     }, [userData]);
 
-        console.log(cryptoData)
     return (
         <div className='min-h-screen w-full mt-10 xl:px-[150px] px-[100px]'>
             <div className="flex flex-col">
                 <p className='text-2xl text-white mb-4 font-normal'>Your Favorite Cryptos</p>
-                <div className='bg-black/30 p-4 rounded-lg min-h-[600px]'>
+                <div className='bg-[#1C1C1C] p-4 rounded-lg min-h-[600px]'>
                     <Table.Table>
                     <Table.Thead>
                         <Table.Tr className="border-none">
@@ -91,7 +90,7 @@ export default function CryptoMain({}) {
                         {cryptoData?.slice(0, 10).map((crypto, index) => (
                         <Table.Tr key={crypto.name} className="text-gray-100 border-gray-700 border-r-none border-l-none font-normal hover:cursor-pointer hover:bg-black/20" onClick={() => navigate(`/crypto/${crypto._id}`)}>
                             <Table.Td className="border-none"><p>
-                                {index}
+                                {index+1}
                                 </p>
                             </Table.Td>
                             <Table.Td className="border-none"><p>

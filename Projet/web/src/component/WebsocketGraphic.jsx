@@ -53,27 +53,30 @@ export default function WebsocketGraphic(props) {
             websocketTerminate.current();
         }
     }, [symbols]);
+
     return (
         <div className="w-full">
-            <Modal
-                isOpen={modalIsOpen}
-                onAfterOpen={afterOpenModal}
-                onRequestClose={closeModal}
-                style={customStyles}
-                contentLabel="Example Modal"
-                overlayClassName="modal-overlay"
-            >
-                <KlineChart symbols={klineSymbol}/>
-            </Modal>
-            <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 2xl:grid-cols-4 gap-5 z-20 w-full">
-                {symbols?.map((symbol, index) => {
-                    return (
-                        <div onClick={() => {openModal(); setKlineSymbol(symbol)}}>
-                            <CryptoBadge symbol={symbol} index={index} websocketDataAggregation={websocketDataAggregation} />
-                        </div>
-                    )
-                })}
-            </div>
-    </div>
+            {symbols.find(el => el.quoteAsset === "USDT") && 
+            <div className="flex gap-5">
+                <div className="w-[300px]">
+                    <CryptoBadge symbol={symbols.find(el => el.quoteAsset === "USDT")} height={500} index={0} websocketDataAggregation={websocketDataAggregation} />
+                </div>
+                <div className="w-full rounded-lg">
+                    <KlineChart symbols={klineSymbol}/>
+                </div>
+            </div>}
+            <div>
+                <p className='text-white text-2xl mb-5 mt-8'>Real-Time Transactions</p>
+                <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 2xl:grid-cols-4 gap-5 z-20 w-full">
+                    {symbols?.map((symbol, index) => {
+                        return (
+                            <div onClick={() => {openModal(); setKlineSymbol(symbol)}}>
+                                <CryptoBadge symbol={symbol} index={index} websocketDataAggregation={websocketDataAggregation} />
+                            </div>
+                        )
+                    })}
+                    </div>
+                </div>
+        </div>
     )
 }
