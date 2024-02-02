@@ -13,7 +13,7 @@ function MainArticle({content}) {
           <div className='py-10 flex gap-5'>
               <p className='text-[#ffbe0b] text-4xl cursor-pointer hover:text-amber-500 ml-5'>{content.name}</p>
               <div>
-                  <p className='text-[#FFFFFF]'>{content.desc} </p>
+                  <p className='text-gray-300 font-normal'>{content.desc} </p>
                   <a href={content.link} target="_blank" rel="noreferrer">
                     <button className="shadow-lg h-fit mt-10 bg-[#686868] text-gray-100 hover:opacity-80 font-bold px-10 py-3 rounded-lg">Read more</button>
                   </a>
@@ -30,7 +30,7 @@ function BasicArticle({content}) {
         <a href={content.link} target="_blank" rel="noreferrer">
             <h4 className='text-2xl font-black text-[#ffbe0b] mb-5  cursor-pointer hover:text-amber-500'>{content.name}</h4>
         </a>
-        <p className='text-[#FFFFFF] opacity-60 mt-3'>{content.desc}</p>
+        <p className='text-gray-300 font-normal mt-3'>{content.desc}</p>
         <hr className='my-5' />
     </div>
   )
