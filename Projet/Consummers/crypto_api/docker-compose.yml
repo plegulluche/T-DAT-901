@@ -2,8 +2,8 @@ version: '3.8'
 services:
   api:
     container_name: cm-api
-    image: countmoneycontainerregistry.azurecr.io/cm-api:latest
-    #image: cm-api
+    # image: countmoneycontainerregistry.azurecr.io/cm-api:latest
+    image: cm-api
     restart: always
     build: ./api
     ports:
@@ -11,20 +11,10 @@ services:
     depends_on:
       - cache_node
 
-  web:
-    container_name: cm-web
-    image: countmoneycontainerregistry.azurecr.io/cm-web:latest
-    #image: cm-web
-    build: ./web
-    ports:
-      - "80:3000"
-    depends_on:
-      - api
-
   redis:
     container_name: cm-redis
-    image: countmoneycontainerregistry.azurecr.io/cm-redis:latest
-    #image: redislabs/redismod
+    # image: countmoneycontainerregistry.azurecr.io/cm-redis:latest
+    image: redislabs/redismod
     ports:
       - "6379:6379"
     entrypoint:
@@ -36,8 +26,8 @@ services:
 
   cache_node:
     container_name: cm-cache
-    image: countmoneycontainerregistry.azurecr.io/cm-cache:latest
-    #image: cm-cache
+    # image: countmoneycontainerregistry.azurecr.io/cm-cache:latest
+    image: cm-cache
     build: ./cacheMicroservice
     ports:
       - "8081:8081"
@@ -46,8 +36,8 @@ services:
 
   websocket_server:
     container_name: cm-websocket
-    image: countmoneycontainerregistry.azurecr.io/cm-websocket:latest
-    #image: cm-websocket
+    # image: countmoneycontainerregistry.azurecr.io/cm-websocket:latest
+    image: cm-websocket
     build: ./websocketServer
     ports:
       - "8082:8082"
