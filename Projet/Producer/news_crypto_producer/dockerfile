@@ -1,28 +1,21 @@
-FROM python:3.10
+FROM python:3.10-slim
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
 # Copy the current directory contents into the container at /usr/src/app
-COPY . /usr/src/app
-
-# Set execute permissions for the start script
-RUN chmod +x /usr/src/app/start_app.sh
+COPY . .
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Make port 5000 available to the world outside this container
-EXPOSE 5000
+# Make port 8080 available to the world outside this container
+# This is optional and can be adjusted based on your app's needs
+EXPOSE 6000
 
-# Define environment variable
-ENV FLASK_APP=app
-ENV FLASK_ENV=development
+ENV PYTHONPATH="${PYTHONPATH}:/usr/src/app"
 
-# Uncoment the lines if you prefer automatic launch or custom switch
 
-# CMD to keep the container running without starting the Flask app
-CMD ["tail", "-f", "/dev/null"]
-
-# Run app.py when the container launches
-# CMD ["flask", "run", "--host=0.0.0.0"]
+# Run producer.py when the container launches
+# The argument number is the number of pages to scrappe
+CMD ["python", "./run_producer.py", "1"]

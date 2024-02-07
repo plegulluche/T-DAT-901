@@ -1,6 +1,22 @@
 import scrapy
+from kafka import KafkaProducer
 import json
-import os
+
+producer = KafkaProducer(
+    bootstrap_servers=['kafka:9092'],
+    value_serializer=lambda v: json.dumps(v).encode('utf-8'),
+    key_serializer=lambda v: json.dumps(v).encode('utf8')
+)
+
+def send_to_kafka(topic, message):
+    future = producer.send(topic, message)
+    try:
+        record_metadata = future.get(timeout=10)
+        print("Message sent to topic:", record_metadata.topic)
+        print("Partition:", record_metadata.partition)
+        print("Offset:", record_metadata.offset)
+    except Exception as e:
+        print("Error sending message:", e)
 
 class CryptoBlockSpider(scrapy.Spider):
     """
@@ -18,8 +34,6 @@ class CryptoBlockSpider(scrapy.Spider):
         'ROBOTSTXT_OBEY': False
     }
 
-    if os.path.exists('news3.json'):
-        os.remove('news3.json')
 
     def start_requests(self):
         """
@@ -85,14 +99,16 @@ class CryptoBlockSpider(scrapy.Spider):
             'content': content,
         }
 
-        with open('news3.json', 'a', encoding='utf-8') as json_file:
-            if os.path.getsize('news3.json') == 0:
-                json_file.write('[')
-            else:
-                json_file.write(',')
+        send_to_kafka('news3', data)
 
-            json.dump(data, json_file, ensure_ascii=False, indent=2)
-            json_file.write('\n')
+        # with open('news3.json', 'a', encoding='utf-8') as json_file:
+        #     if os.path.getsize('news3.json') == 0:
+        #         json_file.write('[')
+        #     else:
+        #         json_file.write(',')
+
+        #     json.dump(data, json_file, ensure_ascii=False, indent=2)
+        #     json_file.write('\n')
 
         yield data
 
@@ -114,12 +130,3 @@ class CryptoBlockSpider(scrapy.Spider):
         """
         self.logger.error(f"Request failed for article link: {failure.request.url}, Error: {failure.value}")
 
-    def closed(self, reason):
-        """
-        Finalizes the JSON file when the spider is closed.
-
-        Args:
-            reason (str): The reason why the spider was closed.
-        """
-        with open('news3.json', 'a', encoding='utf-8') as json_file:
-            json_file.write(']')

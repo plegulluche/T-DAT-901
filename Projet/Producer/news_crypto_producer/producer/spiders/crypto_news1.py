@@ -1,6 +1,22 @@
 import scrapy
+from kafka import KafkaProducer
 import json
-import os
+
+producer = KafkaProducer(
+    bootstrap_servers=['kafka:9092'],
+    value_serializer=lambda v: json.dumps(v).encode('utf-8'),
+    key_serializer=lambda v: json.dumps(v).encode('utf8')
+)
+
+def send_to_kafka(topic, message):
+    future = producer.send(topic, message)
+    try:
+        record_metadata = future.get(timeout=10)
+        print("Message sent to topic:", record_metadata.topic)
+        print("Partition:", record_metadata.partition)
+        print("Offset:", record_metadata.offset)
+    except Exception as e:
+        print("Error sending message:", e)
 
 class CryptoSpider(scrapy.Spider):
     """
@@ -31,8 +47,6 @@ class CryptoSpider(scrapy.Spider):
         self.max_page = int(max_page) if max_page is not None else 1
         self.actual_page = 1
 
-        if os.path.exists('news1.json'):
-            os.remove('news1.json')
 
     def start_requests(self):
         """
@@ -55,11 +69,11 @@ class CryptoSpider(scrapy.Spider):
         Yields:
             scrapy.Request: Requests for individual news articles.
         """
-        articles = response.css('div[id^="post-"]')
+        articles = response.css('.col-lg-3.d-flex .news-one')
         for article in articles:
-            title = article.css('.article__title::text').get()
-            link = article.css('h4 a::attr(href)').get()
-            source = article.css('.article__badge--sm a::text').get()
+            title = article.css('.news-one-title a.article__title--md::text').get()
+            link = article.css('a::attr(href)').get()
+            source = article.css('.news-one-category::text').get()
 
             if link:
                 yield scrapy.Request(
@@ -88,7 +102,7 @@ class CryptoSpider(scrapy.Spider):
         title = response.meta['title']
         source = response.meta['source']
         raw_date = response.css('time::text').get()
-        cleaned_date = " ".join(raw_date.strip().split())
+        cleaned_date = " ".join(raw_date.strip().split()) if raw_date else None
 
         content_elements = response.css('.article-single__content p, .article-single__content h2 strong')
 
@@ -107,14 +121,7 @@ class CryptoSpider(scrapy.Spider):
             'content': content,
         }
 
-        with open('news1.json', 'a', encoding='utf-8') as json_file:
-            if os.path.getsize('news1.json') == 0:
-                json_file.write('[')
-            else:
-                json_file.write(',')
-
-            json.dump(data, json_file, ensure_ascii=False, indent=2)
-            json_file.write('\n')
+        send_to_kafka('news1', data)
 
         yield data
             
@@ -136,13 +143,3 @@ class CryptoSpider(scrapy.Spider):
             failure (twisted.python.failure.Failure): The failure instance containing the error.
         """
         self.logger.error(f"Request failed for article link: {failure.request.url}, Error: {failure.value}")
-        
-    def closed(self, reason):
-        """
-        Finalizes the JSON file when the spider is closed.
-
-        Args:
-            reason (str): The reason why the spider was closed.
-        """
-        with open('news1.json', 'a', encoding='utf-8') as json_file:
-            json_file.write(']')
