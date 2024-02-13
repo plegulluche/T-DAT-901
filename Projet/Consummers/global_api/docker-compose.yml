@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  db:
+    image: timescale/timescaledb:latest-pg14
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: tdatadmin
+      POSTGRES_PASSWORD: tdatpassword
+      POSTGRES_DB: crypto_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
