@@ -22,7 +22,7 @@ ENV FLASK_ENV=development
 # Uncoment the lines if you prefer automatic launch or custom switch
 
 # CMD to keep the container running without starting the Flask app
-CMD ["tail", "-f", "/dev/null"]
+# CMD ["tail", "-f", "/dev/null"]
 
 # Run app.py when the container launches
-# CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["flask", "run", "--host=0.0.0.0"]
