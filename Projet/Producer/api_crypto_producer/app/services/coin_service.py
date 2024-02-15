@@ -1,6 +1,5 @@
 import os
 import requests
-import json
 import threading
 import time
 import datetime
@@ -12,33 +11,45 @@ from app.kafka.producer import send_to_kafka
 from dotenv import load_dotenv
 
 load_dotenv()
-COIN_SYMBOLS= ["BTC", "ETH"]
+COIN_SYMBOLS= []
 API_KEY = os.getenv('CRYPTO_COMPARE_API_KEY')
 API_BASE_URL= os.getenv('API_BASE_URL_CRYPTO_COMPARE')
 
-# Method to get the list of all coins and theyr id , use the symbol from the response
-# on each coin to call get_price_for_coin()
-def fetch_and_batch_coin_list():
-    endpoint = f'/all/coinlist?summary=true&api_key={API_KEY}'
-    url = f"{API_BASE_URL}{endpoint}"
-    response = requests.get(url)
+# Method to get the top 10 coins list to get the data from 
+def get_toplist_pair_by_volume():
+    endpoint = 'https://min-api.cryptocompare.com/data/top/volumes?tsym=USD&limit=9'
+    response = requests.get(endpoint)
     if response.status_code == 200:
-        coins = response.json()['Data']
-        # Assuming a batch size of 100 for example
-        batch_size = 100
-        for i in range(0, len(coins), batch_size):
-            batch = dict(list(coins.items())[i:i + batch_size])
-            send_to_kafka('coin_list', batch)  # Replace with Kafka send later
-    else:
-        print("Failed to fetch coin list")
+        raw_response = response.json()['Data']
+        for coin in raw_response:
+            COIN_SYMBOLS.append(coin['SYMBOL'])
 
 # Call this function at Flask app startup
-fetch_and_batch_coin_list()
+get_toplist_pair_by_volume()
+
+# Method to get the list of all coins and theyr id , use the symbol from the response
+# on each coin to call get_price_for_coin()
+# def fetch_and_batch_coin_list():
+#     endpoint = f'/all/coinlist?summary=true&api_key={API_KEY}'
+#     url = f"{API_BASE_URL}{endpoint}"
+#     response = requests.get(url)
+#     if response.status_code == 200:
+#         coins = response.json()['Data']
+#         # Assuming a batch size of 100 for example
+#         batch_size = 100
+#         for i in range(0, len(coins), batch_size):
+#             batch = dict(list(coins.items())[i:i + batch_size])
+#             send_to_kafka('coin_list', batch)  # Replace with Kafka send later
+#     else:
+#         print("Failed to fetch coin list")
+
+# Call this function at Flask app startup
+# fetch_and_batch_coin_list()
 
 def fetch_and_send_coin_price():  
     previous_prices = {}
     while True:
-        for coin in ['BTC', 'ETH']:
+        for coin in COIN_SYMBOLS:
             endpoint= f'/price?fsym={coin}&tsyms=USD,JPY,EUR&api_key={API_KEY}'
             url= f'{API_BASE_URL}{endpoint}'
             response = requests.get(url)
