@@ -1,0 +1,21 @@
+FROM python:3.10-slim
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Copy the current directory contents into the container at /usr/src/app
+COPY . .
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Make port 8080 available to the world outside this container
+# This is optional and can be adjusted based on your app's needs
+EXPOSE 6000
+
+ENV PYTHONPATH="${PYTHONPATH}:/usr/src/app"
+
+
+# Run producer.py when the container launches
+# The argument number is the number of pages to scrappe
+CMD ["python3", "articles_consumer.py"]

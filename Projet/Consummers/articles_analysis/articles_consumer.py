@@ -2,11 +2,27 @@ import json
 import string
 import re
 import ccxt
+from kafka import KafkaConsumer
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import nltk
 
+nltk.download('vader_lexicon')
+nltk.download('punkt')
+nltk.download('stopwords')
+
+topics = ['news1', 'news2', 'news3']
+
+consumer = KafkaConsumer(
+        *topics,
+        bootstrap_servers=['kafka:9092'],
+        auto_offset_reset='earliest',
+        enable_auto_commit=True,
+        group_id='news-reader-test-seven',
+        value_deserializer=lambda x: json.loads(x.decode('utf-8')),
+        consumer_timeout_ms=5000
+)
 
 def fetch_cryptocurrencies():
     exchange = ccxt.binance()
@@ -40,41 +56,48 @@ def find_crypto_in_article(article, crypto_names):
         return "Unknown"
 
 def main():
-    nltk.download('punkt')
-    nltk.download('stopwords')
-    nltk.download('vader_lexicon')
-    
+    i = 0
+    print("Fetching cryptocurrencies...")
     cryptocurrencies = fetch_cryptocurrencies()
+    print("sentiment analysis...")
     vader = SentimentIntensityAnalyzer()
     
-    first_articles = []
+    all_articles = []
     crypto_sentiment_scores = {}
 
-    with open('articles.json', 'r') as f:
-        articles = json.load(f)
-        for article in articles:
+    print("Consuming messages from topics...")
+    try:
+        for message in consumer:
+            print("Topics == ", message.topic)
+            article = message.value
             crypto_found = find_crypto_in_article(article, cryptocurrencies)
             date = article.get('date', 'Unknown Date')
             text = ' '.join(article['content'])
             score = vader.polarity_scores(text)
-            
+        
             sentiment = "Neutral"
             if score['compound'] > 0.5:
                 sentiment = "Positive"
             elif score['compound'] < -0.5:
                 sentiment = "Negative"
-            
+        
             if crypto_found not in crypto_sentiment_scores:
                 crypto_sentiment_scores[crypto_found] = [{'date': date, 'sentiment': sentiment}]
             else:
                 crypto_sentiment_scores[crypto_found].append({'date': date, 'sentiment': sentiment})
-            
-            first_articles.append({
+            print('Article:', i)
+            i += 1
+            all_articles.append({
                 "date": date,
                 "crypto": crypto_found,
                 "sentiment": sentiment,
-            })
+            })        
+    except StopIteration:
+        print("No more messages. Exiting...")
+    finally:
+        consumer.close()
 
+    print("Aggregating sentiment scores...")
     final_scores = {}
     for crypto, entries in crypto_sentiment_scores.items():
         for entry in entries:
@@ -91,9 +114,10 @@ def main():
                 elif sentiment_score < 0 and final_scores[crypto]['sentiment'] != "Negative":
                     final_scores[crypto] = {'date': entry['date'], 'crypto': crypto, 'sentiment': entry['sentiment']}
 
+    print("Saving results to json files...")
     with open('first_articles.json', 'w') as outfile:
-        json.dump(first_articles, outfile, indent=4)
-    print("First articles saved to first_articles.json")
+        json.dump(all_articles, outfile, indent=4)
+    print("First articles saved to all_articles.json")
 
     with open('crypto_sentiment_scores.json', 'w') as outfile:
         json.dump(final_scores, outfile, indent=4)
