@@ -1,0 +1,13 @@
+from sqlalchemy import Column, Integer, String, Float
+from app.core.database import Base
+
+class Crypto(Base):
+    __tablename__ = "cryptos_list"
+
+    id = Column(Integer, primary_key=True, index=True)
+    coin_name = Column(String, index=True)
+    coin_full_name = Column(String)
+    launch_date = Column(String)
+    max_supply = Column(Float)
+    supply = Column(Float)
+    circulating_supply = Column(Float)
