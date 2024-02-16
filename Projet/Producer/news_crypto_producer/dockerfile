@@ -18,4 +18,5 @@ ENV PYTHONPATH="${PYTHONPATH}:/usr/src/app"
 
 # Run producer.py when the container launches
 # The argument number is the number of pages to scrappe
+# CMD ["tail", "-f", "/dev/null"]
 CMD ["python", "./run_producer.py", "1"]

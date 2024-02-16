@@ -14,7 +14,8 @@ load_dotenv()
 COIN_SYMBOLS= []
 API_KEY = os.getenv('CRYPTO_COMPARE_API_KEY')
 API_BASE_URL= os.getenv('API_BASE_URL_CRYPTO_COMPARE')
-
+print("PIERRE DEBUG :" , "key :", API_KEY)
+print("URL :", API_BASE_URL)
 # Method to get the top 10 coins list to get the data from 
 def get_toplist_pair_by_volume():
     endpoint = 'https://min-api.cryptocompare.com/data/top/volumes?tsym=USD&limit=9'
