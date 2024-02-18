@@ -1,80 +1,45 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import requests from '../api/Requests'
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import React from 'react';
+import { useEffect } from 'react';
+import Carousel from './Carousel';
+import ChildCarousel from './ChildCarousel';
 
-function MainArticle({content}) {
+
+const Hero = ({ data }) => {
+  useEffect(() => {
+    // Data manipulation logic here if necessary
+  }, []); 
+
+  const carouselSlides = data.slice(0, 4).map(newsItem => ({
+    image: newsItem.image,
+    title: newsItem.name,
+    description: newsItem.desc,
+    link: newsItem.link,
+    alt: newsItem.title,
+  }));
+
+  const groupedArticles = [];
+  for (let i = 0; i < data.length; i += 2) {
+    groupedArticles.push(data.slice(i, i + 2));
+  }
+
+  console.log(groupedArticles);
+
+  if (!data.length) return <div>Loading...</div>;
+
   return (
-      <div className='bg-[#3A3A3A] w-[840px] p-5 rounded-lg mb-5' >
-          <div className='w-full'>
-              <img src={content.image} alt="hero" className="h-fit w-full rounded-xl" />
-          </div>
-          <div className='py-10 flex gap-5'>
-              <p className='text-[#ffbe0b] text-4xl cursor-pointer hover:text-amber-500 ml-5'>{content.name}</p>
-              <div>
-                  <p className='text-gray-300 font-normal'>{content.desc} </p>
-                  <a href={content.link} target="_blank" rel="noreferrer">
-                    <button className="shadow-lg h-fit mt-10 bg-[#686868] text-gray-100 hover:opacity-80 font-bold px-10 py-3 rounded-lg">Read more</button>
-                  </a>
-              </div>      
-          </div>
-          <hr className='my-5' />
+    <div className='my-2 h-screen'>
+      {/* <h2 className='text-4xl font-bold text-gray-100 mb-5'>Trending Now</h2> */}
+      <div className='w-full flex flex-col sm:flex-row h-screen justify-between'>
+      <div className=' mx-auto sm:mx-0 flex justify-center w-[100%] sm:w-[45%] h-screen'>
+        <Carousel slides={carouselSlides} />
       </div>
-  )
-}
-
-function BasicArticle({content}) {
-  return (
-    <div>
-        <a href={content.link} target="_blank" rel="noreferrer">
-            <h4 className='text-2xl font-black text-[#ffbe0b] mb-5  cursor-pointer hover:text-amber-500'>{content.name}</h4>
-        </a>
-        <p className='text-gray-300 font-normal mt-3'>{content.desc}</p>
-        <hr className='my-5' />
-    </div>
-  )
-}
-
-const Hero = (props) => {
-  const [count, setCount] = useState(undefined)
-  const userData = useSelector((state) => state.userReducer);
-
-    useEffect(() => {
-        if (userData._id) {
-            const request = requests.GetConfigCount
-            .replace('{id}', userData._id)
-            axios.get(request)
-            .then((response) => {
-                setCount(response.data)
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-        }
-        else {
-          const request = requests.GetAll
-            axios.get(request)
-            .then((response) => {
-                setCount(response.data[0].count)
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-        }
-    }, [userData])
-
-  if (!count) return <div>loading</div>
-  return (
-    <div className='my-10 gap-10 flex flex-col sm:flex-row bg-[#252525]'>
-      <div>
-        {props.data.slice(0, count / 2).map(content => <MainArticle content={content} />)}
-      </div>
-      <div className='bg-[#3A3A3A] rounded-lg p-10'>
-        {props.data.slice(0, count / 2).map(content => <BasicArticle content={content}/>)}
+      <div className='w-full sm:w-[50%]'>
+          <ChildCarousel slides={groupedArticles} />
+        </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Hero
+export default Hero;
+
