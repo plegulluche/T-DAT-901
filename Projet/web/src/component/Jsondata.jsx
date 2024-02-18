@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Articles from './Hero';
+import Hero from './Hero';
 import { useSelector } from "react-redux";
 import requests from '../api/Requests';
 import axios from 'axios';
@@ -50,8 +50,8 @@ export default function Jsondata() {
   }, [keywords]);
 
   return (
-    <div className='mx-auto pl-28 pr-12'>
-        <Articles data={recentBlogPost} />
+    <div className='mx-auto pl-28 pr-12' >
+        <Hero data={recentBlogPost} />
     </div>
   )
 }
