@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float
-from app.core.database import Base
+from ..core.database import Base
 
 class Crypto(Base):
     __tablename__ = "cryptos_list"

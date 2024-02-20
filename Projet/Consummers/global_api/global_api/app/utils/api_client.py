@@ -1,12 +1,19 @@
 import httpx
 from typing import Any, Dict, List
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+API_KEY = os.getenv('API_KEY')
 
 async def fetch_top_coin_infos(api_url: str) -> List[Dict[str, Any]]:
+    params = {"authorization": API_KEY}
     async with httpx.AsyncClient() as client:
         try:
-            response = await client.get(api_url)
+            response = await client.get(api_url, params=params)
             response.raise_for_status()
-            data = response.json()["Data"]  # Adjusted to directly access the 'Data' key
+            data = response.json()["Data"]
 
             parsed_data = [
                 {
