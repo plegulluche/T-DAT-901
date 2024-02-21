@@ -1,4 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import UniqueConstraint
+
 from ..core.database import Base
 
 class Crypto(Base):
@@ -11,3 +13,8 @@ class Crypto(Base):
     max_supply = Column(Float)
     supply = Column(Float)
     circulating_supply = Column(Float)
+
+    __table_args__ = (UniqueConstraint('coin_name'),)
+
+    class Config:
+        orm_mode = True

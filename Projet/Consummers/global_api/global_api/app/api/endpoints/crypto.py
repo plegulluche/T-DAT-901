@@ -8,14 +8,16 @@ from ...dependencies import get_db_session
 
 router = APIRouter()
 
-@router.post("/cryptos", response_model=CryptoSchema)
+@router.post("/cryptos", response_model=List[CryptoSchema])
 async def add_crypto(api_url: str, db: AsyncSession = Depends(get_db_session)):
     # Fetch data from external API
     try:
         crypto_data_list = await fetch_top_coin_infos(api_url)
+        created_cryptos = []
         for crypto_data in crypto_data_list:
-            await create_crypto(db, crypto_data)
-        return {"message": "Cryptos added successfully"}
+            created_crypto = await create_crypto(db, crypto_data)
+            created_cryptos.append(created_crypto)
+        return created_cryptos
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
