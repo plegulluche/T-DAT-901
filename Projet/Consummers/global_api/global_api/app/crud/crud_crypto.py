@@ -28,6 +28,5 @@ async def create_crypto(db_session: AsyncSession, crypto_data: dict) -> Crypto:
 
 
 async def get_cryptos(db_session: AsyncSession) -> List[Crypto]:
-    async with db_session() as session:
-        result = await session.execute(select(Crypto))
-        return result.scalars().all()
+    result = await db_session.execute(select(Crypto))
+    return result.scalars().all()
