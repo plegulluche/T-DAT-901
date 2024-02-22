@@ -14,6 +14,3 @@ app.add_event_handler("startup", startup)
 app.include_router(routers.router, prefix="/api")
 
 
-@app.get("/health")
-async def health_check():
-    return {"status": "up"}
