@@ -8,19 +8,15 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
   function Chart({ symbol, websocketDataAggregation }) {
     const { lastPrice, initialPrice, lastQuantity } = websocketDataAggregation[symbol.symbol] ?? {};
     const [data, setData] = useState([]);
-    const [maxValue, setMaxValue] = useState(0);
-    const [domain, setDomain] = useState([])
   
     useEffect(() => {
           const newElement = { lastPrice, initialPrice, lastQuantity };
           const newData = [...data, { name: "", value: parseFloat(newElement.lastPrice) }];
       
-          if (newData.length > 20) {
+          if (newData.length > 50) {
             newData.shift();
           }
           const newMaxValue = Math.max(...newData.map(entry => entry.value));
-          setDomain([parseFloat(maxValue - 0.5 * maxValue).toFixed(2), parseFloat(maxValue + 0.5 * maxValue).toFixed(2)])
-          setMaxValue(newMaxValue);
           setData(newData);
   
     }, [lastPrice, initialPrice, lastQuantity]);
@@ -39,9 +35,9 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
           }}
         >
           <XAxis fontSize={8} dataKey="name" tick="none" />
-          <YAxis fontSize={8} domain={domain} />
+          <YAxis fontSize={8} domain={[46300, 46700]} />
           <Tooltip />
-          <Line isAnimationActive={false} type="monotone" dataKey="value" stroke="#18C328" activeDot={{ r: 8 }} />
+          <Line isAnimationActive={false} type="monotone" dataKey="value" stroke="#18C328" activeDot={{ r: 2, stroke: "green" }} dot={{r: 2, fills: "green"}} />
         </LineChart>
       </ResponsiveContainer>
     );
@@ -78,7 +74,7 @@ export default function WebsocketGraphic(props) {
                     <CryptoBadge symbol={symbols.find(el => el.quoteAsset === "USDT")} height={500} index={0} websocketDataAggregation={websocketDataAggregation} />
                 </div>
                 <div className="w-full rounded-lg">
-                    <div id="chart" className='bg-[#3A3A3A] w-full h-[500px] rounded-lg shadow-xl flex items-center justify-center' style={{ height: 500 }} >
+                    <div id="chart" className='bg-[#242424] w-full h-[500px] rounded-lg shadow-xl flex items-center justify-center' style={{ height: 500 }} >
                         <Chart symbol={symbols.find(el => el.quoteAsset === "USDT")} websocketDataAggregation={websocketDataAggregation}/>
                     </div>
                 </div>

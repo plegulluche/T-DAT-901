@@ -6,42 +6,22 @@ const paginate = require('express-paginate');
 
 let CryptoCoinsController = {
     getAll: async (req, res) => {
-        const marketCapSort = req.query.sort === 'marketCap' ? (req.query.filter === 'ascending' ? 1 : (req.query.filter === 'descending' ? -1 : 0)) : 0;
-        const totalSupply = req.query.sort === 'totalSupply' ? (req.query.filter === 'ascending' ? 1 : (req.query.filter === 'descending' ? -1 : 0)) : 0;
-        const circulatingSupply = req.query.sort === 'circulatingSupply' ? (req.query.filter === 'ascending' ? 1 : (req.query.filter === 'descending' ? -1 : 0)) : 0;
-        const isPopular = req.query.sort === 'isPopular' ? (req.query.filter === 'ascending' ? 1 : (req.query.filter === 'descending' ? -1 : 0)) : 0;
-
-        const sortSelector = () => {
-
-            if (marketCapSort === 1 || marketCapSort === -1) {
-                return { marketCap: marketCapSort };
-            } else if (totalSupply === 1 || totalSupply === -1) {
-                return { totalSupply: totalSupply };
-            } else if (circulatingSupply === 1 || circulatingSupply === -1) {
-                return { circulatingSupply: circulatingSupply };
-            } else if (isPopular === 1 || isPopular === -1) {
-                return { isPopular: isPopular };
-            }
-
-            return {};
-
-        }
-
-
         try {
-            //get crypto coins sorted by market cap
-            const [results, itemCount] = await Promise.all([
-                CryptoCoinsModel.find({}).sort(sortSelector()).limit(req.query.limit).skip(req.skip).lean().exec(),
-                CryptoCoinsModel.countDocuments({})
-            ]);
-            const pageCount = Math.ceil(itemCount / req.query.limit);
+            
+            let cryptoCoin = await CryptoCoinsModel.findById("637f9edf629c8bb3fa22dd0f");
+            let cryptoCoin2 = await CryptoCoinsModel.findById("637f9edf629c8bb3fa22dd15");
+            let cryptoCoin3 = await CryptoCoinsModel.findById("637f9edf629c8bb3fa22dd27");
+            let cryptoCoin4 = await CryptoCoinsModel.findById("637f9ee1629c8bb3fa22de61");
+            let cryptoCoin5 = await CryptoCoinsModel.findById("637f9edf629c8bb3fa22dd71");
+            let cryptoCoin6 = await CryptoCoinsModel.findById("637f9ede629c8bb3fa22dc99");
+            let cryptoCoin7 = await CryptoCoinsModel.findById("637f9ee0629c8bb3fa22dda9");
+            let cryptoCoin8 = await CryptoCoinsModel.findById("637f9edf629c8bb3fa22dd4b");
+            let cryptoCoin9 = await CryptoCoinsModel.findById("637f9edf629c8bb3fa22dd3d");
+            let cryptoCoin10 = await CryptoCoinsModel.findById("637f9ede629c8bb3fa22dccd");
 
             // inspired by Stripe's API response for list objects
             res.status(200).json({
-                pageCount,
-                itemCount,
-                cryptoCoins: results,
-                pages: paginate.getArrayPages(req)(2, pageCount, req.query.page)
+                cryptoCoins: [cryptoCoin, cryptoCoin2, cryptoCoin3, cryptoCoin4, cryptoCoin5, cryptoCoin6, cryptoCoin7, cryptoCoin8, cryptoCoin9, cryptoCoin10],
             });
 
 
