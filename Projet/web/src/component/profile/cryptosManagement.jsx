@@ -7,21 +7,22 @@ import { useEffect } from "react";
 const customStyles = {
     content: {
         top: '50%',
-        left: '50%',
+        left: '60%',
         right: 'auto',
         bottom: 'auto',
         marginRight: '-50%',
         backgroundColor: '#191919',
-        borderRadius: 20,
+        borderRadius: 10,
         transform: 'translate(-50%, -50%)',
         borderColor: '#484848',
-        borderWidth: 5
+        borderWidth: 3,
+        width: 600
     },
 }
 
 function CryptoCard({crypto, adding=false, addNewCrypto, deleteCrypto}) {
     return (
-        <div className="w-[300px] h-[45px] rounded-lg flex justify-between items-center px-5 bg-[#2E2E2E] hover:cursor-pointer hover:opacity-80 mb-3"
+        <div className="w-full h-[45px] rounded-lg flex justify-between items-center px-5 bg-[#373737] hover:cursor-pointer hover:opacity-80 mb-3"
             onClick={() => adding ? addNewCrypto(crypto) : null}>
             <div className="flex items-center">
                 <img src={crypto.logoUrl} className="w-[27px] h-[3 0px] mr-5"></img>
@@ -34,7 +35,6 @@ function CryptoCard({crypto, adding=false, addNewCrypto, deleteCrypto}) {
 
 export default function CryptoSelection({profile, userData}) {
     const [cryptoData, setCryptoData] = useState([])
-    const [pages, setPages] = useState({next: '', prev: ''});
     const [newCrypto, setNewCrypto] = useState(false)
     const [cryptos, setCryptos] = useState([]) //need to be store in database
 
@@ -72,10 +72,10 @@ export default function CryptoSelection({profile, userData}) {
             .replace('{page}', 1)
             .replace('{limit}', 10);
 
+
             axios.get(request)
             .then((response) => {
                 setCryptoData(response.data.cryptoCoins);
-                setPages({next: response.data.pages[1], prev: response.data.pages[0]});
             })
             .catch((error) => {
                 console.log(error);
@@ -83,18 +83,7 @@ export default function CryptoSelection({profile, userData}) {
         }
     }, [newCrypto])
 
-    function loadMore() {
-        const request = requests.apiUrl + pages?.next.url;
 
-        axios.get(request)
-        .then((response) => {
-            setCryptoData(response.data.cryptoCoins);
-            setPages({next: response.data.pages[1], prev: response.data.pages[0]});
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-    }
 
     const addNewCrypto = (elem) => {
         if (cryptos.filter(el => el.name === elem.name).length > 0) return
@@ -150,11 +139,11 @@ export default function CryptoSelection({profile, userData}) {
     }
 
     return (
-        <div>
-            <div className={`${!profile ? 'max-h-[400px]' : 'max-h-[350px]'} overflow-y-auto`}>
+        <div className="">
+            <div className={`${!profile ? 'max-h-[400px]' : 'max-h-[360px]'} overflow-y-auto pr-5`}>
                 {cryptos.map(elem => <CryptoCard crypto={elem} deleteCrypto={(elem) => deleteCrypto(elem)} />)}
             </div>
-            <div className="w-[300px] h-[35px] mt-3 border-2 border-dashed rounded-lg border-gray-600 flex items-center justify-center hover:bg-[#2E2E2E] hover:cursor-pointer"
+            <div className="w-[350Px] h-[35px] mt-5 border-2 border-dashed rounded-lg border-gray-500 flex items-center justify-center"
                 onClick={() => setNewCrypto(!newCrypto)}>
                 <p className="text-gray-500 text-2xl mb-2">+</p>
             </div>
@@ -166,8 +155,8 @@ export default function CryptoSelection({profile, userData}) {
                     contentLabel="Example Modal"
                     overlayClassName="modal-overlay"
                 >
-                    {cryptoData.map(elem => <CryptoCard crypto={elem} adding={true} addNewCrypto={(elem) => addNewCrypto(elem)} />)}
-                    <button className="px-3 py-2 w-full rounded-lg bg-[#545454] text-gray-300 hover:opacity-80" onClick={loadMore}>Load more</button>
+                    <p className="text-white text-lg mb-3">Select your favorites cryptos</p>
+                    {cryptoData.filter(ell => !cryptos.map(el => el._id).includes(ell._id)).map(elem => <CryptoCard crypto={elem} adding={true} addNewCrypto={(elem) => addNewCrypto(elem)} />)}
                     <button className="px-3 py-2 w-full rounded-lg bg-[#68A165] mt-3 text-gray-300 hover:opacity-80"
                         onClick={() => setNewCrypto(false)}>Valider</button>
                 </Modal>

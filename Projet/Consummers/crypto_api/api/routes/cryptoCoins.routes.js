@@ -43,6 +43,7 @@ router.get("/",
             type: "string"
         }
     */
+   
     cryptoCoinsController.getAll
 );
 router.get("/:id",

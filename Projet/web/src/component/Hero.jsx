@@ -27,14 +27,13 @@ const Hero = ({ data }) => {
   if (!data.length) return <div>Loading...</div>;
 
   return (
-    <div className='my-2 h-screen'>
-      {/* <h2 className='text-4xl font-bold text-gray-100 mb-5'>Trending Now</h2> */}
-      <div className='w-full flex flex-col sm:flex-row h-screen justify-between'>
-      <div className=' mx-auto sm:mx-0 flex justify-center w-[100%] sm:w-[45%] h-screen'>
-        <Carousel slides={carouselSlides} />
-      </div>
-      <div className='w-full sm:w-[50%]'>
-          <ChildCarousel slides={groupedArticles} />
+    <div className='h-screen pt-8'>
+      <div className='h-full w-full flex flex-col sm:flex-row gap-10'>
+        <div className='h-full flex justify-center w-[100%] sm:w-[45%]'>
+          <Carousel slides={carouselSlides} />
+        </div>
+        <div className='w-full sm:w-[50%]'>
+            <ChildCarousel slides={groupedArticles} />
         </div>
       </div>
     </div>

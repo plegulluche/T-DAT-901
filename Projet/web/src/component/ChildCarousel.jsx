@@ -24,7 +24,7 @@ function MainArticle({ content }) {
 
   return (
     <div
-      className="bg-white flex flex-col p-4 rounded-lg mb-4 ml-4 overflow-hidden"
+      className="bg-[#232323] border border-gray-500/50 flex flex-col p-4 rounded-lg mb-4 ml-4 overflow-hidden"
       style={{ minHeight: "100%" }}
     >
       <div className="w-full flex-shrink-0">
@@ -37,7 +37,7 @@ function MainArticle({ content }) {
       <div className="flex flex-col flex-grow pt-4">
         <p
           style={titleStyle}
-          className="text-gray-900 text-lg cursor-pointer hover:text-amber-500"
+          className="text-gray-300 text-lg cursor-pointer hover:text-purple-500"
         >
           {content.name}
         </p>
@@ -71,7 +71,7 @@ const ChildCarousel = ({ slides }) => {
   };
 
   return (
-    <div className="h-full flex flex-col justify-around">
+    <div className="h-full flex flex-col">
       <Slider
         ref={(slider) => {
           sliderRef = slider;
@@ -87,13 +87,13 @@ const ChildCarousel = ({ slides }) => {
           </div>
         ))}
       </Slider>
-      <div className="text-center pb-4">
+      <div className="text-center pb-4 mt-5 ml-5">
         <button
           onClick={previous}
-          className="bg-white p-2 rounded-full shadow-md mx-2 focus:outline-none hover:bg-gray-100"
+          className="bg-purple-500 p-2 rounded-full shadow-md mx-2 focus:outline-none hover:bg-purple-700"
         >
           <svg
-            className="w-6 h-6 text-gray-800"
+            className="w-6 h-6 text-gray-200"
             fill="none"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -106,10 +106,10 @@ const ChildCarousel = ({ slides }) => {
         </button>
         <button
           onClick={next}
-          className="bg-white p-2 rounded-full shadow-md mx-2 focus:outline-none hover:bg-gray-100"
+          className="bg-purple-500 p-2 rounded-full shadow-md mx-2 focus:outline-none hover:bg-purple-700"
         >
           <svg
-            className="w-6 h-6 text-gray-800"
+            className="w-6 h-6 text-gray-200"
             fill="none"
             strokeLinecap="round"
             strokeLinejoin="round"

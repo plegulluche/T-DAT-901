@@ -15,7 +15,7 @@ import ConnectButton from '../component/ConnectButton';
 
 function Layout({}) {
     return (
-      <div className='bg-[#252525] w-full'>
+      <div className=' w-full'>
         <Navbar />
         <ConnectButton />
         <Outlet />

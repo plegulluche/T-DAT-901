@@ -12,15 +12,6 @@ import { getUser } from "./redux/actions/user.actions";
 import './chart.less'
 import {UserContext} from './component/UserContext'
 
-function Layout({}) {
-  return (
-    <div className='bg-[#252525] flex flex-row '>
-      <Navbar />
-      <Outlet />
-    </div>
-  )
-}
-
 export default function App() {
   const [uid, setUid] = useState(null);
   const dispatch = useDispatch();

@@ -5,11 +5,15 @@ import ArticleNumberButton from "../component/ArticleNumberButton";
 import { useState, useEffect } from "react";
 import requests from "../api/Requests";
 import axios from "axios";
+import { BrightStar, Settings } from "iconoir-react";
 
 function UserCryptoManagement({userData}) {    
     return (
         <div className="h-full w-full flex flex-col items-center pt-5">
-            <p className="text-gray-100 text-2xl font-bold mb-5">Your cryptos</p>
+            <div className="flex gap-4 items-center mb-5">
+                <BrightStar width={28} height={28} className="text-purple-500"/>
+                <p className="text-gray-100 text-xl font-semibold">Cryptos favorites</p>
+            </div>
             <CryptoSelection profile={true} userData={userData}/>
         </div>
     )
@@ -72,10 +76,10 @@ export default function Profile({}) {
 
     return (
         <div className="min-h-screen w-full relative flex items-center justify-center z-20">
-            <div className="bg-[#1C1C1C] h-[650px] w-[1200px] z-20 rounded-lg shadow-2xl drop-shadow-xl p-[25px] flex flex-col justify-center">
-                <div className="bg-[#262626] w-full h-[110px] rounded-xl flex justify-between p-2">
-                    <div className="flex items-center">
-                        <img src="./men.png" className="w-[100px] h-[100px] mr-2"></img>
+            <div className="bg-[#232323] border border-gray-500/50 h-[650px] w-[1200px] z-20 rounded-lg shadow-2xl drop-shadow-xl p-[25px] flex flex-col justify-center">
+                <div className="bg-[#373737] w-full h-[110px] rounded-xl flex justify-between p-2">
+                    <div className="flex items-center py-2 px-3">
+                        <img src="./logo2.png" className="w-[70px] h-[70px] mr-7"></img>
                         <div>
                             <p className="text-gray-200 text-2xl font-bold mb-1">{userData.username}<span className="ml-5 text-lg text-gray-400 italic">{role}</span></p>
                             <p className="text-[#868686] text-xl font-bold">{userData.email}</p>
@@ -85,14 +89,17 @@ export default function Profile({}) {
                         <svg className="m-3 hover:scale-105 hover:cursor-pointer" width="35px" height="35px" stroke-width="2.0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="red"><path d="M12 12h7m0 0l-3 3m3-3l-3-3M19 6V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2v-1" stroke="#C65151" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                     </div>
                 </div>
-                <div className="w-full h-full flex justify-center p-2">
+                <div className="w-full h-full flex justify-center p-2 mt-2">
                     <UserCryptoManagement userData={userData}/>
-                    <div className="w-[2px] bg-[#525252] h-[70%]"></div>
+                    <div className="w-[2px] bg-gray-200/20 h-[90%] mt-5"></div>
                     <NewsKeywordsManagement user={userData}/>
-                    <div className="w-[2px] bg-[#525252] h-[70%]"></div>
+                    <div className="w-[2px] bg-gray-200/20 h-[90%] mt-5"></div>
                     <div className="w-[70%] flex flex-col items-center rounded-xl mt-5">
-                        <h1 className="text-gray-300 text-2xl mb-5">Configuration</h1>
-                        <div className=" bg-[#262626] p-5 rounded-lg">
+                    <div className="flex gap-4 items-center mb-5">
+                        <Settings width={24} height={24} className="text-purple-500"/>
+                        <p className="text-gray-100 text-xl font-semibold">Configuration</p>
+                    </div>
+                        <div className=" bg-[#373737] p-5 rounded-lg">
                             <div className="w-full px-3">
                                 <div className="flex flex-col justify-between items-center">
                                     <p className="text-lg text-gray-300 mb-3">News to display</p>

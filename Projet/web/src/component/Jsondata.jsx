@@ -50,7 +50,7 @@ export default function Jsondata() {
   }, [keywords]);
 
   return (
-    <div className='mx-auto pl-28 pr-12' >
+    <div className='pl-32 pr-12' >
         <Hero data={recentBlogPost} />
     </div>
   )

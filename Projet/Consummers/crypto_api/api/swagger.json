@@ -933,6 +933,20 @@
         "description": "",
         "parameters": [
           {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "name": "sort",
             "in": "query",
             "description": "Sort type (marketCap, totalSupply, circulatingSupply, isPopular)",
@@ -945,20 +959,6 @@
             "description": "Sort by ascending or descending",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of items per page",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Page number",
-            "required": false,
-            "type": "integer"
           }
         ],
         "responses": {
