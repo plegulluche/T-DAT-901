@@ -2,6 +2,8 @@ import React from 'react';
 import { useEffect } from 'react';
 import Carousel from './Carousel';
 import ChildCarousel from './ChildCarousel';
+import Seartch from './Search';
+import Loader from './Loader';
 
 
 const Hero = ({ data }) => {
@@ -24,11 +26,14 @@ const Hero = ({ data }) => {
 
   console.log(groupedArticles);
 
-  if (!data.length) return <div>Loading...</div>;
+  // if (!data.length) return <Loader />;
 
   return (
     <div className='my-2 h-screen'>
-      {/* <h2 className='text-4xl font-bold text-gray-100 mb-5'>Trending Now</h2> */}
+    <div className='my-20'><Seartch /></div>
+      { !data.length ? (<Loader /> 
+      ) : (
+
       <div className='w-full flex flex-col sm:flex-row h-screen justify-between'>
       <div className=' mx-auto sm:mx-0 flex justify-center w-[100%] sm:w-[45%] h-screen'>
         <Carousel slides={carouselSlides} />
@@ -37,9 +42,9 @@ const Hero = ({ data }) => {
           <ChildCarousel slides={groupedArticles} />
         </div>
       </div>
+      )}
     </div>
   );
 }
 
 export default Hero;
-
