@@ -51,8 +51,8 @@ export default function Login({}) {
             </div>
             <div className='lg:min-h-screen w-full z-20 flex items-center lg:justify-start justify-center'>
                 <div className='w-[70%] h-[70%] flex flex-col items-center mt-[40px]'>
-                <img src="../logo2.png" className='w-[170px] h-[110px]' />
-                <p className='text-[55px] text-gray-400 font-bold'>Hello !</p>
+                <img src="../logo2.png" className='w-[140px] h-[140px]' />
+                <p className='text-[32px] mt-3 text-purple-500 font-bold'>Welcome on Bousti<span className='text-white'>Crypto</span> !</p>
                 <div className='flex flex-col gap-[15px] mt-[30px] items-center'>
                 <input onChange={(e) => setEmail(e.target.value)} value={email} type="text" className='w-[350px] h-[43px] flex flex-col text-[15px] text-gray-600 p-[5px] border-2 rounded-md border-gray-400 bg-gray-200' placeholder='Email'></input>
                 <div className="email error"></div>
@@ -61,13 +61,13 @@ export default function Login({}) {
                 <div className='flex gap-1'>
                     <p className='text-[15px] text-gray-400 font-bold'>Don't have an account ?</p>
                     <Link to="/auth/register">
-                        <p className='text-[15px] text-orange-400 font-bold hover:cursor-pointer'>Create one now !</p>
+                        <p className='text-[15px] text-purple-500 font-bold hover:cursor-pointer'>Create one now !</p>
                     </Link>
                 </div>
                 <div to="/cryptos" onClick={() => navAnonymous()}>
                     <p className='text-[15px] text-gray-500 underline hover:cursor-pointer'>Continue as anonymous user</p>
                 </div>
-                <div className='w-full bg-[#b88334] h-[45px] rounded-md mt-[20px] flex items-center justify-center hover:cursor-pointer hover:bg-[#DC962E]'>
+                <div className='w-full bg-purple-500 h-[45px] rounded-md mt-[20px] flex items-center justify-center hover:cursor-pointer hover:bg-purple-600'>
                     <button onClick={handleLogin} className='text-gray-300 font-bold text-[18px]'>Login</button>
                 </div>
             </div>
