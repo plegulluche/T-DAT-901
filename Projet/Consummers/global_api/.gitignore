@@ -9,4 +9,4 @@ venv.bak/
 cred.ini
 # Cython debug symbols
 cython_debug/
-*.ipybn
+*.ipynb
