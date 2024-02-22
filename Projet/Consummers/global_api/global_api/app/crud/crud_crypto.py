@@ -7,25 +7,25 @@ from typing import List
 
 async def create_crypto(db_session: AsyncSession, crypto_data: dict) -> Crypto:
     try:
-        # Insert or update the crypto_data
-        stmt = insert(Crypto).values(**crypto_data).returning(Crypto.id)
-        on_conflict_stmt = stmt.on_conflict_do_update(
-            index_elements=['coin_name'],  # Adjust if your unique identifier is different
-            set_={c.key: c for c in stmt.excluded if c.key not in ['id']}
-        ).returning(Crypto.id)
-        result = await db_session.execute(on_conflict_stmt)
-        await db_session.commit()
-        
-        # Fetch the inserted/updated row's id
-        crypto_id = result.fetchone()[0]
+        stmt = insert(Crypto).values(**crypto_data).on_conflict_do_update(
+            index_elements=['coin_name'],
+            set_={key: value for key, value in crypto_data.items() if key != 'id'}
+        ).returning(*Crypto.__table__.c)
 
-        # Retrieve the updated/inserted Crypto instance
-        result = await db_session.execute(select(Crypto).where(Crypto.id == crypto_id))
-        crypto_instance = result.scalars().first()
-        return crypto_instance
+        result = await db_session.execute(stmt)
+        await db_session.commit()
+
+        crypto_row = result.fetchone()
+        if crypto_row:
+            # Ensure conversion to a dictionary is done correctly
+            crypto_dict = {column.key: getattr(crypto_row, column.key) for column in Crypto.__table__.columns}
+            return Crypto(**crypto_dict)
+        else:
+            raise Exception("Failed to insert or update the crypto record.")
     except Exception as e:
-        await db_session.rollback()  # Rollback in case of error
-        raise e  # Log or handle the error as needed
+        await db_session.rollback()
+        raise e
+
 
 async def get_cryptos(db_session: AsyncSession) -> List[Crypto]:
     async with db_session() as session:
