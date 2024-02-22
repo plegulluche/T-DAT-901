@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.dialects.postgresql import insert
+from ..models.crypto_historical_data_model import CryptoHistoricalData
 from ..models.crypto_list_model import Crypto
 from typing import List
 
@@ -30,3 +31,10 @@ async def create_crypto(db_session: AsyncSession, crypto_data: dict) -> Crypto:
 async def get_cryptos(db_session: AsyncSession) -> List[Crypto]:
     result = await db_session.execute(select(Crypto))
     return result.scalars().all()
+
+
+async def bulk_insert_crypto_data(db_session: AsyncSession, data: List[dict]):
+    for item in data:
+        db_item = CryptoHistoricalData(**item)
+        db_session.add(db_item)
+    await db_session.commit()

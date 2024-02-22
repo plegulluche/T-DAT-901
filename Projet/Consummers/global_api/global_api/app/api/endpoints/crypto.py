@@ -25,3 +25,4 @@ async def add_crypto(api_url: str, db: AsyncSession = Depends(get_db_session)):
 async def read_cryptos(db: AsyncSession = Depends(get_db_session)):
     cryptos = await get_cryptos(db)
     return cryptos
+
