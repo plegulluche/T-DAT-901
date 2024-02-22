@@ -12,7 +12,7 @@ app = FastAPI()
 async def startup():
     # Create database tables
     await create_tables()
-    await cache_crypto_data()
+    # await cache_crypto_data()
 
 
 app.add_event_handler("startup", startup)
