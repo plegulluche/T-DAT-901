@@ -2,6 +2,8 @@ import React from 'react';
 import { useEffect } from 'react';
 import Carousel from './Carousel';
 import ChildCarousel from './ChildCarousel';
+import Seartch from './Search';
+import Loader from './Loader';
 
 
 const Hero = ({ data }) => {
@@ -24,7 +26,7 @@ const Hero = ({ data }) => {
 
   console.log(groupedArticles);
 
-  if (!data.length) return <div>Loading...</div>;
+  // if (!data.length) return <Loader />;
 
   return (
     <div className='h-screen pt-8'>
@@ -36,9 +38,9 @@ const Hero = ({ data }) => {
             <ChildCarousel slides={groupedArticles} />
         </div>
       </div>
+      )}
     </div>
   );
 }
 
 export default Hero;
-

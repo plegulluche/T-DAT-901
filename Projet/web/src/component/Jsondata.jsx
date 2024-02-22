@@ -8,9 +8,10 @@ import { useUserContext } from './UserContext';
 export default function Jsondata() {
   const [recentBlogPost, setRecentBlogPost] = useState([]);
   const user = useSelector((state) => state.userReducer);
-  const [keywords, setKeywords] = useState(null)
-  const {getUser} = useUserContext()
-
+  const search = useSelector((state) => state.searchReducer); // Get the search term from the reducer
+  const [keywords, setKeywords] = useState(null);
+  const {getUser} = useUserContext();
+  
   useEffect(() => {
     if (user && getUser() === 'connected') {
       const request = requests.GetUserKeywordsByUserId
@@ -32,22 +33,40 @@ export default function Jsondata() {
 
 
   async function FetchDataFromRssFeed() {
-      var request = new XMLHttpRequest();
-      request.onreadystatechange = async () => {
-        if (request.readyState == 4 && request.status == 200) {
-          var myObj = await JSON.parse(request.responseText);
-          const tmp = myObj.articles.map(elem => ({ link: elem.url, image: elem.urlToImage, name: elem.title, desc: elem.description }))
-          setRecentBlogPost(tmp)
+    // Determine the query based on the presence of a search term
+    const query = search.searchTerm
+      ? `(${search.searchTerm})`
+      : keywords && keywords.length
+        ? `(${keywords.join(" OR ")})`
+        : '';
+  
+    try {
+      const response = await axios.get('https://newsapi.org/v2/everything', {
+        params: {
+          q: query,
+          sortBy: 'popularity',
+          apiKey: process.env.REACT_APP_API_KEY, // Use an environment variable for your API key
         }
-      }
-      request.open("GET", `https://newsapi.org/v2/everything?q=(${keywords.map(elem => (keywords.findIndex(el => el === elem) === (keywords.length - 1)) ? elem : elem + " OR ").join('')})&sortBy=popularity&apiKey=89c42f05c2b141909fc8839c81b33197`, true);
-      request.send()
+      });
+      const articles = response.data.articles.map(article => ({
+        link: article.url,
+        image: article.urlToImage,
+        name: article.title,
+        desc: article.description
+      }));
+      setRecentBlogPost(articles);
+    } catch (error) {
+      console.error("Error fetching news articles:", error);
+    }
   }
+  
+  
 
   useEffect(() => {
-    if (keywords)
+    if (keywords) {
       FetchDataFromRssFeed();
-  }, [keywords]);
+    }
+  }, [keywords, search.searchTerm]);
 
   return (
     <div className='pl-32 pr-12' >
