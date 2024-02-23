@@ -11,6 +11,21 @@ services:
       POSTGRES_DB: crypto_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
+  fastapi_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - API_KEY=${API_KEY}
+      - DATABASE_URL=${DATABASE_URL_DOCKER}
+      - USER=${USER}
+      - PASSWORD=${PASSWORD}
+      - DB_NAME=${DB_NAME}
+    depends_on:
+      - db
+    volumes:
+      - .:/app
 volumes:
   postgres_data:
