@@ -1,31 +1,35 @@
-# from aiokafka import AIOKafkaConsumer
-# from main import active_websockets
+from confluent_kafka import Consumer, KafkaError
 
-# async def broadcast_message(message: str):
-#     disconnected_sockets = []
-#     for websocket in active_websockets:
-#         try:
-#             await websocket.send_text(message)
-#         except Exception:
-#             disconnected_sockets.append(websocket)
-    
-#     for websocket in disconnected_sockets:
-#         await disconnect_websocket(websocket)
+class KafkaConsumerService:
+    def __init__(self, topics):
+        self.consumer = Consumer({
+            'bootstrap.servers': 'kafka:9092',
+            'group.id': 'my-group',
+            'auto.offset.reset': 'earliest'
+        })
+        self.topics = topics
 
-# async def consume():
-#     consumer = AIOKafkaConsumer(
-#         'BTC_price', 'ETH_price', 'SOL_price',
-#         bootstrap_servers='kafka:9092',
-#         group_id="crypto-reader")
+    def consume_messages(self):
+        self.consumer.subscribe(self.topics)
 
-#     await consumer.start()
-#     try:
-#         async for msg in consumer:
-#             # Check if the message is from the 'BTC_price' topic
-#             if msg.topic == 'BTC_price':
-#                 print(f"Received message from {msg.topic}: {msg.value.decode('utf-8')}")
-#             decoded_msg = msg.value.decode('utf-8')
-#             # await broadcast_message(decoded_msg)
-#     finally:
-#         await consumer.stop()
+        try:
+            while True:
+                msg = self.consumer.poll(1.0)  # Poll for messages
+                if msg is None:
+                    continue
+                if msg.error():
+                    if msg.error().code() == KafkaError._PARTITION_EOF:
+                        # End of partition event
+                        continue
+                    else:
+                        print(msg.error())
+                        break
+                print(f'Received message: {msg.value().decode("utf-8")}')
+        except KeyboardInterrupt:
+            pass
+        finally:
+            self.consumer.close()
 
+    def start_consuming(self):
+        # This method is intended to be run in a background task
+        self.consume_messages()
