@@ -31,7 +31,7 @@ export default function CryptoDetails(props) {
     useEffect(() => {
         if (cryptoDetails && cryptoDetails.cryptoCoin)
             getCryptoPrice("USD", cryptoDetails.cryptoCoin.symbol, moment().subtract(2, "years").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"))
-    }, [crypto])
+    }, [cryptoDetails])
 
     return (
         <div className='min-h-screen w-full flex flex-col lg:pl-[140px] pr-[80px] p-5 relative'>
@@ -39,9 +39,9 @@ export default function CryptoDetails(props) {
             <div className='w-[100%] h-[140px] flex rounded-xl z-20 p-5 gap-5 items-center justify-center'>
                 <div className='w-[380px] h-fit flex flex-col gap-2 items-center'>
                     <img className='w-[70px] h-[70px]' src={cryptoDetails?.cryptoCoin?.logoUrl} />
-                    <h1 className='text-white w-fit text-[25px] ml-3'>{cryptoDetails?.cryptoCoin?.name}</h1>
+                    <h1 className='text-white w-fit text-[25px]'>{cryptoDetails?.cryptoCoin?.name}</h1>
                 </div>
-                <div className='bg-[#242424] shadow-xl w-full h-fit grid grid-cols-4 h-full items-center gap-2 justify-around p-2 rounded'>
+                <div className='bg-[#232323] border border-gray-500/50 shadow-lg w-full h-fit grid grid-cols-4 h-full items-center gap-2 justify-around p-2 rounded'>
                     <div className='flex flex-col items-center mb-1'>
                         <p className='text-gray-400 text-[12px]'>MarketCap</p>
                         <p className='text-white text-[14px]'>{cryptoDetails?.cryptoCoinDetails?.marketCap && formatNumber(cryptoDetails.cryptoCoinDetails.marketCap.toFixed(2))} $</p>
@@ -59,7 +59,7 @@ export default function CryptoDetails(props) {
                         <p className='text-white text-[14px] w-[100px] truncate'>{cryptoDetails?.cryptoCoinDetails?.links}</p>
                     </div>
                 </div>
-                <div className='w-1/3 bg-[#242424] rounded p-3 flex flex-col gap-2 items-center shadow-xl'>
+                <div className='w-1/3 bg-[#232323] border border-gray-500/50 rounded p-3 flex flex-col gap-2 items-center shadow-xl'>
                     <p className='text-gray-200'>Feeling analysis</p>
                     <p className='text-green-500 font-bold text-4xl'>
                     <svg className='w-10 h-10 text-green-500' width="24px" height="24px" stroke-width="2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"

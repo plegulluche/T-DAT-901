@@ -35,7 +35,7 @@ export default function CryptoBadge({ symbol, index, websocketDataAggregation, h
     }, [lastPrice, initialPrice, lastQuantity]);
 
     return (
-        <div key={index} className={`w-full bg-[#242424] ${height ? `h-[${height}px]` : "h-[200px]"} cursor-pointer text-white flex flex-col p-5 rounded-lg shadow-lg drop-shadow-lg `}>
+        <div key={index} className={`w-full bg-[#232323] border border-gray-500/50 ${height ? `h-[${height}px]` : "h-[200px]"} cursor-pointer text-white flex flex-col p-5 rounded-lg shadow-lg drop-shadow-lg `}>
             <div className="w-full h-full overflow-hidden">
                 <div className="flex justify-between mb-4">
                     <p className="text-[20px] text-gray-200">{symbol.symbol}</p>
