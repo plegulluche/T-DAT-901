@@ -40,7 +40,7 @@ export default function WebsocketGraphic(props) {
                     <CryptoBadge symbol={symbols.find(el => el.quoteAsset === "USDT")} height={500} index={0} websocketDataAggregation={websocketDataAggregation} />
                 </div>
                 <div className="w-full rounded-lg">
-                    <div id="chart" className='bg-[#242424] w-full h-[500px] rounded-lg shadow-xl flex items-center justify-center' style={{ height: 500 }} >
+                    <div id="chart" className='bg-[#232323] border border-gray-500/50 w-full h-[500px] rounded-lg shadow-xl flex items-center justify-center' style={{ height: 500 }} >
                         <Chart prices={prices}/>
                     </div>
                 </div>

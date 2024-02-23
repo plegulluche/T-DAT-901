@@ -4,6 +4,7 @@ import Carousel from './Carousel';
 import ChildCarousel from './ChildCarousel';
 import Seartch from './Search';
 import Loader from './Loader';
+import Search from './Search';
 
 
 const Hero = ({ data }) => {
@@ -30,6 +31,9 @@ const Hero = ({ data }) => {
 
   return (
     <div className='h-screen pt-8'>
+      <div className='mb-5'>
+        <Search />
+      </div>
       <div className='h-full w-full flex flex-col sm:flex-row gap-10'>
         <div className='h-full flex justify-center w-[100%] sm:w-[45%]'>
           <Carousel slides={carouselSlides} />
@@ -38,7 +42,6 @@ const Hero = ({ data }) => {
             <ChildCarousel slides={groupedArticles} />
         </div>
       </div>
-      )}
     </div>
   );
 }
