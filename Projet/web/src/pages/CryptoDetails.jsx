@@ -3,21 +3,35 @@ import axios from 'axios';
 import requests from '../api/Requests';
 import { useParams } from "react-router";
 import WebsocketGraphic from '../component/WebsocketGraphic';
-import KlineChart from '../component/KlineChart';
 import { formatNumber } from './CryptoMain';
-import { useNavigate } from 'react-router-dom';
+import moment from "moment"
 
 export default function CryptoDetails(props) {
 
     const [cryptoDetails, setCryptoDetails] = useState([]);
     const crypto = useParams();
-    const navigate = useNavigate()
+    const [prices, setPrices] = useState()
     
     useEffect(() => {
         axios.get(requests.GetCryptoCoinById + crypto.cryptoId).then((response) => {
             setCryptoDetails(response.data);
         });
     }, [crypto]);
+
+    const getCryptoPrice = async (fiat, coin, startDate, endDate ) => {
+        await axios({
+            method: "get",
+            url: `http://localhost:8000/api/v1/historical-data?fiat=${fiat}&coin=${coin}&start_date=${startDate}&end_date=${endDate}`,
+        }).then(e => {
+            console.log(e.data.data)
+            setPrices(e.data.data)
+        })
+    } 
+
+    useEffect(() => {
+        if (cryptoDetails && cryptoDetails.cryptoCoin)
+            getCryptoPrice("USD", cryptoDetails.cryptoCoin.symbol, moment().subtract(2, "years").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"))
+    }, [crypto])
 
     return (
         <div className='min-h-screen w-full flex flex-col lg:pl-[140px] pr-[80px] p-5 relative'>
@@ -56,7 +70,7 @@ export default function CryptoDetails(props) {
             </div>
             <div className='mt-5'>
                 {cryptoDetails?.cryptoCoinDetails?.tradingPairs !== undefined &&
-                    <WebsocketGraphic symbols={cryptoDetails?.cryptoCoinDetails?.tradingPairs} tradeType={'!ticker@arr'}/>
+                    <WebsocketGraphic prices={prices} symbols={cryptoDetails?.cryptoCoinDetails?.tradingPairs} tradeType={'!ticker@arr'}/>
                 }
             </div>
         </div>

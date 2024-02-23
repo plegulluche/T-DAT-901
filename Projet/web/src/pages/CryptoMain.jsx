@@ -7,9 +7,9 @@ import { useSelector } from 'react-redux';
 import { useUserContext } from '../component/UserContext';
 import * as Table from "../component/table.jsx";
 import {BrightStar, NavArrowUp} from "iconoir-react"
+import moment from "moment"
 
 export function formatNumber(number) {
-    console.log(number)
     if (!number || !parseFloat(number)) return
     if (number < 1000000) {
       return `$${number.toFixed(2)}`;
@@ -18,7 +18,54 @@ export function formatNumber(number) {
     } else {
       return `$${(number / 1000000000).toFixed(2)} B`;
     }
-  }
+}
+
+function CryptoRow({crypto, index}) {
+    const navigate = useNavigate()
+
+    const getCryptoPrice = async (fiat, coin, startDate, endDate ) => {
+        await axios({
+            method: "get",
+            url: `http://localhost:8000/api/v1/historical-data?fiat=${fiat}&coin=${coin}&start_date=${startDate}&end_date=${endDate}`,
+        }).then(e => {
+            console.log(e)
+        })
+    } 
+
+    useEffect(() => {
+        // getCryptoPrice("USD", crypto.symbol, moment().format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"))
+    }, [crypto])
+        
+    return (
+        <Table.Tr key={crypto.name} className="text-gray-100 border-gray-400/20 border-r-none border-l-none font-normal hover:cursor-pointer hover:bg-black/20" onClick={() => navigate(`/crypto/${crypto._id}`)}>
+            <Table.Td className="border-none">
+                <p>
+                    {index+1}
+                </p>
+            </Table.Td>
+            <Table.Td className="border-none">
+                <div className='flex items-center gap-4'>
+                    <img src={crypto.logoUrl} width={25} height={25} />
+                    <p>
+                        {crypto.name}
+                    </p>
+                </div>
+            </Table.Td>
+            <Table.Td className="border-none">
+                {crypto.symbol}
+            </Table.Td>
+            <Table.Td className="border-none">
+                {formatNumber(crypto.marketCap?.toFixed(2))}
+            </Table.Td>
+            <Table.Td className="border-none">
+                {formatNumber(crypto.totalSupply?.toFixed(2))}
+            </Table.Td>
+            <Table.Td className="border-none py-3 text-end">
+                <NavArrowUp width={25} height={25} strokeWidth={2} className='text-green-500' />
+             </Table.Td>
+        </Table.Tr>
+    )
+}
   
 
 export default function CryptoMain({}) {
@@ -26,7 +73,6 @@ export default function CryptoMain({}) {
     const [cryptoData, setCryptoData] = useState([]);
     const userData = useSelector((state) => state.userReducer)
     const {getUser} = useUserContext()
-    const navigate = useNavigate()
 
     useEffect(() => {
         if (getUser() === 'anonymous') {
@@ -94,33 +140,8 @@ export default function CryptoMain({}) {
                     </Table.Thead>
                     <Table.Tbody>
                         {cryptoData?.slice(0, 10).map((crypto, index) => (
-                        <Table.Tr key={crypto.name} className="text-gray-100 border-gray-400/20 border-r-none border-l-none font-normal hover:cursor-pointer hover:bg-black/20" onClick={() => navigate(`/crypto/${crypto._id}`)}>
-                            <Table.Td className="border-none"><p>
-                                {index+1}
-                                </p>
-                            </Table.Td>
-                            <Table.Td className="border-none">
-                                <div className='flex items-center gap-4'>
-                                    <img src={crypto.logoUrl} width={25} height={25} />
-                                    <p>
-                                    {crypto.name}
-                                    </p>
-                                </div>
-                            </Table.Td>
-                            <Table.Td className="border-none">
-                                {crypto.symbol}
-                            </Table.Td>
-                            <Table.Td className="border-none">
-                                {formatNumber(crypto.marketCap?.toFixed(2))}
-                            </Table.Td>
-                            <Table.Td className="border-none">
-                                {formatNumber(crypto.totalSupply?.toFixed(2))}
-                            </Table.Td>
-                            <Table.Td className="border-none py-3 text-end">
-                                    <NavArrowUp width={25} height={25} strokeWidth={2} className='text-green-500' />
-                            </Table.Td>
-                        </Table.Tr>
-                                ))}
+                            <CryptoRow crypto={crypto} key={index} index={index}/>
+                        ))}
                     </Table.Tbody>
                     </Table.Table>
                     </div>
