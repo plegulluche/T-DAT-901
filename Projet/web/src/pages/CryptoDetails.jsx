@@ -5,12 +5,15 @@ import { useParams } from "react-router";
 import WebsocketGraphic from '../component/WebsocketGraphic';
 import { formatNumber } from './CryptoMain';
 import moment from "moment"
+import { useSelector } from 'react-redux';
 
 export default function CryptoDetails(props) {
 
     const [cryptoDetails, setCryptoDetails] = useState([]);
     const crypto = useParams();
-    const [prices, setPrices] = useState()
+    const [prices, setPrices] = useState([]);
+    const startDate = useSelector((state) => state.dateReducer.startDate);
+
     
     useEffect(() => {
         axios.get(requests.GetCryptoCoinById + crypto.cryptoId).then((response) => {
@@ -23,15 +26,15 @@ export default function CryptoDetails(props) {
             method: "get",
             url: `http://localhost:8000/api/v1/historical-data?fiat=${fiat}&coin=${coin}&start_date=${startDate}&end_date=${endDate}`,
         }).then(e => {
-            console.log(e.data.data)
+            console.log("test",e.data.data)
             setPrices(e.data.data)
         })
-    } 
+    }
 
     useEffect(() => {
-        if (cryptoDetails && cryptoDetails.cryptoCoin)
-            getCryptoPrice("USD", cryptoDetails.cryptoCoin.symbol, moment().subtract(2, "years").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"))
-    }, [cryptoDetails])
+        if (cryptoDetails && cryptoDetails.cryptoCoin && startDate)
+          getCryptoPrice("USD", cryptoDetails.cryptoCoin.symbol, startDate, moment().format("YYYY-MM-DD"));
+      }, [cryptoDetails, startDate]);
 
     return (
         <div className='min-h-screen w-full flex flex-col lg:pl-[140px] pr-[80px] p-5 relative'>

@@ -3,10 +3,11 @@ import { websocketConnectMulti } from '../api/websocket/binance.WEBSOCKET.connec
 import '../css/WebsocketGraphic.scss'
 import CryptoBadge from "./CryptoBadge";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-
+import Chart from './Chart';
+import ControlComponent from "./ControlComponent";
   
-  function Chart({ prices }) {
-  }
+//   function Chart({ prices }) {
+//   }
   
 
 export default function WebsocketGraphic(props) {
@@ -16,6 +17,7 @@ export default function WebsocketGraphic(props) {
     const [hasConnected, setHasConnected] = useState(false);
     const [klineSymbol, setKlineSymbol] = useState('');
     const websocketTerminate = useRef(null);
+    
 
     
     useEffect(() => {
@@ -32,16 +34,25 @@ export default function WebsocketGraphic(props) {
         }
     }, [symbols]);
 
+    console.log("prices", prices)
+
     return (
         <div className="w-full">
+            <div className="ml-[300px]">
+                <ControlComponent />
+            </div>
+            
             {symbols.find(el => el.quoteAsset === "USDT") && 
             <div className="flex gap-5">
+            
                 <div className="w-[300px]">
                     <CryptoBadge symbol={symbols.find(el => el.quoteAsset === "USDT")} height={500} index={0} websocketDataAggregation={websocketDataAggregation} />
                 </div>
                 <div className="w-full rounded-lg">
+
                     <div id="chart" className='bg-[#232323] border border-gray-500/50 w-full h-[500px] rounded-lg shadow-xl flex items-center justify-center' style={{ height: 500 }} >
-                        <Chart prices={prices}/>
+                        {/* <Chart prices={prices}/> */}
+                        <Chart prices = {prices}/>
                     </div>
                 </div>
             </div>}
