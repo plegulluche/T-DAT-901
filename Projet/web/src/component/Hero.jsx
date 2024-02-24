@@ -34,6 +34,7 @@ const Hero = ({ data }) => {
       <div className='mb-5'>
         <Search />
       </div>
+      { !data.length ? (<Loader />) : (
       <div className='h-full w-full flex flex-col sm:flex-row gap-10'>
         <div className='h-full flex justify-center w-[100%] sm:w-[45%]'>
           <Carousel slides={carouselSlides} />
@@ -42,6 +43,8 @@ const Hero = ({ data }) => {
             <ChildCarousel slides={groupedArticles} />
         </div>
       </div>
+      )}
+      
     </div>
   );
 }
