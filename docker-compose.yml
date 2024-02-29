@@ -16,7 +16,6 @@ services:
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_LOG_RETENTION_MS: 1814400000 # adjust this param in prod to 6048000 we keep 3 weeks in dev for saving api call an message retention.
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
   kafdrop:
@@ -52,7 +51,7 @@ services:
     depends_on:
       - kafka
   db:
-    image: timescale/timescaledb:latest-pg14
+    image: timescale/timescaledb-ha:pg16
     ports:
       - "5432:5432"
     environment:

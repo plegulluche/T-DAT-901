@@ -24,15 +24,13 @@ export default function CryptoDetails(props) {
 
     useEffect(() => {
         // Initialize WebSocket connection
-        console.log("symbol", cryptoDetails?.cryptoCoin?.symbol);
-
         if (cryptoDetails?.cryptoCoin?.symbol === undefined) return;
         const webSocket = new WebSocket(`ws://localhost:8000/ws/${cryptoDetails?.cryptoCoin?.symbol}`);
         
         webSocket.onopen = () => {
             console.log('WebSocket Connected');
             // Subscribe to a specific cryptocurrency updates, adjust as per your WebSocket server's protocol
-            webSocket.send(JSON.stringify({ action: 'subscribe' }));
+            webSocket.send(JSON.stringify({ action: 'subscribe', symbol: cryptoDetails?.cryptoCoin?.symbol}));
         };
         
         webSocket.onmessage = (event) => {
@@ -40,6 +38,7 @@ export default function CryptoDetails(props) {
             try {
                 const data = JSON.parse(event.data);
                 console.log('Parsed data:', data);
+                if (data && data.value && data.value.price) console.log("value", data.value)
                 // Update your state or perform actions based on the message data
             } catch (error) {
                 console.error('Error parsing message data:', error);
@@ -69,14 +68,6 @@ export default function CryptoDetails(props) {
             method: "get",
             url: `http://localhost:8000/api/v1/historical-data?fiat=${fiat}&coin=${coin}&start_date=${startDate}&end_date=${endDate}`,
         }).then(e => {
-            // console.log("test", e.data.data);
-            
-            // // Determine the size of one third of the results
-            // const thirdSize = Math.floor(e.data.data.length / 3);
-            
-            // // Take the first third of the results
-            // const oneThirdData = e.data.data.slice(0, thirdSize);
-            
             setPrices(e.data.data);
         });
     }
@@ -84,7 +75,7 @@ export default function CryptoDetails(props) {
 
     useEffect(() => {
         if (cryptoDetails && cryptoDetails.cryptoCoin && startDate)
-          getCryptoPrice("EUR", cryptoDetails.cryptoCoin.symbol, startDate, moment().format("YYYY-MM-DD"));
+          getCryptoPrice("EUR", cryptoDetails.cryptoCoin.symbol, moment().subtract(3, "year").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"));
       }, [cryptoDetails, startDate]);
 
     return (
