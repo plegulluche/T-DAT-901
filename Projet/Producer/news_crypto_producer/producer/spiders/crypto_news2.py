@@ -55,7 +55,7 @@ class CryptoNewsSpider(scrapy.Spider):
         Yields:
             scrapy.Request: Requests for individual news articles with their metadata.
         """
-        articles = response.css('.post-loop--category-news')
+        articles = response.css('.post-loop')
 
         for article in articles:
             title = article.css('.post-loop__title a::text').get()
