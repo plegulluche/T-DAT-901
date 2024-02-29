@@ -27,7 +27,7 @@ function CryptoCard({crypto, adding=false, addNewCrypto, deleteCrypto}) {
             <div className="flex items-center">
                 <img src={crypto.logoUrl} className="w-[28px] h-[3 0px] mr-5"></img>
                 <div className="flex flex-col">
-                    <p className="text-gray-300 text-lg">{crypto.name}</p>
+                    <p className="text-gray-300 text-base font-semibold">{crypto.name}</p>
                     <p className="text-gray-300/50 text-xs">{crypto.symbol}</p>
                 </div>
             </div>
@@ -130,7 +130,6 @@ export default function CryptoSelection({profile, userData}) {
                 })
         }
         else {
-            console.log(elem)
             const request = requests.DeletePopularCryptoById
                 .replace('{id}', elem._id)
                 axios.delete(request)
