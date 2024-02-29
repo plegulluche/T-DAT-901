@@ -1,14 +1,13 @@
 import json
 import string
-import re
-import ccxt
 from kafka import KafkaConsumer
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import nltk
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 import pytz
+import requests
 
 nltk.download('vader_lexicon')
 nltk.download('punkt')
@@ -36,13 +35,15 @@ def get_current_date_est():
     return formatted_date
 
 def fetch_cryptocurrencies():
-    exchange = ccxt.binance()
-    markets = exchange.load_markets()
-    crypto_names = set()
-    for symbol in markets.keys():
-        base, _ = symbol.split('/')
-        crypto_names.add(base)
-    return crypto_names
+    url = "https://api.coingecko.com/api/v3/coins/list"
+    response = requests.get(url)
+    data = response.json()
+
+    crypto_mapping = {}
+    for coin in data:
+        crypto_mapping[coin['name']] = coin['symbol'].upper()
+    crypto_mapping = {k: v for k, v in crypto_mapping.items() if 'block' not in k.lower() and 'rate' not in k.lower()}
+    return crypto_mapping
 
 def preprocess_text(text):
     text = text.lower()
@@ -51,18 +52,18 @@ def preprocess_text(text):
     tokens = [word for word in tokens if word not in stopwords.words('english')]
     return tokens
 
-def find_crypto_in_article(article, crypto_names):
+def find_crypto_in_article(article, crypto_mapping):
     searchable_text = preprocess_text(article['title'] + ' ' + ' '.join(article['content']))
-    crypto_counts = {crypto: 0 for crypto in crypto_names}
-
-    for word in searchable_text:
-        if word.upper() in crypto_counts:
-            crypto_counts[word.upper()] += 1
-
-    primary_crypto = max(crypto_counts, key=crypto_counts.get)
+    crypto_counts = {name: 0 for name in crypto_mapping.keys()}
     
-    if crypto_counts[primary_crypto] > 0:
-        return primary_crypto
+    for word in searchable_text:
+        for name, token in crypto_mapping.items():
+            if word.upper() == name.upper():
+                crypto_counts[name] += 1
+
+    if max(crypto_counts.values()) > 0:
+        primary_crypto_name = max(crypto_counts, key=crypto_counts.get)
+        return crypto_mapping[primary_crypto_name].upper()
     else:
         return "Unknown"
 
@@ -72,18 +73,14 @@ def main():
     cryptocurrencies = fetch_cryptocurrencies()
     print("sentiment analysis...")
     vader = SentimentIntensityAnalyzer()
-    
     all_articles = []
     crypto_sentiment_scores = {}
-
     print("Consuming messages from topics...")
     try:
         for message in consumer:
-            print(f"Consumed message: {message.value}")
             print("Topics == ", message.topic)
             article = message.value
             crypto_found = find_crypto_in_article(article, cryptocurrencies)
-            print(f"Crypto found: {crypto_found}")
             date = article.get('date', 'Unknown Date')
             text = ' '.join(article['content'])
             score = vader.polarity_scores(text)
@@ -105,7 +102,8 @@ def main():
                 "date": date,
                 "crypto": crypto_found,
                 "sentiment": sentiment,
-            })        
+                "score": score['compound'],
+            })
     except StopIteration:
         print("No more messages. Exiting...")
     finally:
@@ -115,7 +113,6 @@ def main():
     final_scores = {}
     for crypto, entries in crypto_sentiment_scores.items():
         for entry in entries:
-            print('FINAL SCORES : ', final_scores)
             sentiment_score = 0
             if entry['sentiment'] == "Positive":
                 sentiment_score = 1
