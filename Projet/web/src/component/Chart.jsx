@@ -7,7 +7,7 @@ const Chart = ({ prices }) => {
     // Assuming the element ID where the chart will be rendered is 'chart'
     const chart = init('chart');
 
-    console.log("passed correctly",prices);
+    // console.log("passed correctly",prices);
 
     // Format the incoming data to match the expected format for klinecharts
     const formattedData = prices.map(price => ({

@@ -12,6 +12,7 @@ export default function CryptoDetails(props) {
     const [cryptoDetails, setCryptoDetails] = useState([]);
     const crypto = useParams();
     const [prices, setPrices] = useState([]);
+    const [ws, setWs] = useState(null); // WebSocket state
     const startDate = useSelector((state) => state.dateReducer.startDate);
 
     
@@ -21,12 +22,54 @@ export default function CryptoDetails(props) {
         });
     }, [crypto]);
 
+    useEffect(() => {
+        // Initialize WebSocket connection
+        console.log("symbol", cryptoDetails?.cryptoCoin?.symbol);
+
+        if (cryptoDetails?.cryptoCoin?.symbol === undefined) return;
+        const webSocket = new WebSocket(`ws://localhost:8000/ws/${cryptoDetails?.cryptoCoin?.symbol}`);
+        
+        webSocket.onopen = () => {
+            console.log('WebSocket Connected');
+            // Subscribe to a specific cryptocurrency updates, adjust as per your WebSocket server's protocol
+            webSocket.send(JSON.stringify({ action: 'subscribe' }));
+        };
+        
+        webSocket.onmessage = (event) => {
+            console.log('Received message from server');
+            try {
+                const data = JSON.parse(event.data);
+                console.log('Parsed data:', data);
+                // Update your state or perform actions based on the message data
+            } catch (error) {
+                console.error('Error parsing message data:', error);
+            }
+        };
+        
+        webSocket.onerror = (error) => {
+            console.error('WebSocket Error ', error);
+        };
+        
+        webSocket.onclose = () => {
+            console.log('WebSocket Disconnected');
+        };
+
+        setWs(webSocket);
+
+        // Clean up the WebSocket connection when the component unmounts
+        return () => {
+            if (webSocket) {
+                webSocket.close();
+            }
+        };
+    }, [cryptoDetails]); // Depend on the crypto symbol for reconnection
+
     const getCryptoPrice = async (fiat, coin, startDate, endDate) => {
         await axios({
             method: "get",
             url: `http://localhost:8000/api/v1/historical-data?fiat=${fiat}&coin=${coin}&start_date=${startDate}&end_date=${endDate}`,
         }).then(e => {
-            console.log("test", e.data.data);
+            // console.log("test", e.data.data);
             
             // Determine the size of one third of the results
             const thirdSize = Math.floor(e.data.data.length / 3);

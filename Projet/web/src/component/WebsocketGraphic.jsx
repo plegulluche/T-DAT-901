@@ -33,7 +33,7 @@ export default function WebsocketGraphic(props) {
         }
     }, [symbols]);
 
-    console.log(symbols)
+    // console.log(symbols)
     return (
         <div className="w-full">
             <div className="ml-[300px]">
