@@ -33,15 +33,11 @@ class CryptoDataService:
 
 async def cache_crypto_data():
     fiat = ['EUR', 'USD']
-    crypto = [
-        'BTC', 'ETH', 'USDT', 'SOL', 'XRP', 'USDC',
-        'ADA', 'AVAX', 'LINK', 'TRX', 'DOT', 'MATIC'
-    ]
+    crypto = ['BTC', 'USDT', 'ETH', 'SOL', 'XRP', 'AVAX', 'TRX', 'OP', 'LINK', 'ADA']
 
     crosses = [f"{c}-{f}" for f in fiat for c in crypto]
-    print('CROSSES : ', crosses)
 
-    service = CryptoDataService("2022-01-01", "2024-01-01", crosses)
+    service = CryptoDataService("2020-01-01", "2024-02-24", crosses)
     df = service.fetch_crypto_data()
 
     if not df.empty:

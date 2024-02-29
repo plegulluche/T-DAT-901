@@ -1,1 +1,1 @@
-from app.services.coin_service import fetch_and_send_coin_price, get_toplist_pair_by_volume
+from app.services.coin_service import fetch_and_send_coin_price

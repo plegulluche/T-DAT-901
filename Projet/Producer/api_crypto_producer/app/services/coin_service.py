@@ -11,22 +11,22 @@ from app.kafka.producer import send_to_kafka
 from dotenv import load_dotenv
 
 load_dotenv()
-COIN_SYMBOLS= []
+COIN_SYMBOLS= ['BTC', 'USDT', 'ETH', 'SOL', 'XRP', 'AVAX', 'TRX','OP','LINK', 'ADA']
 API_KEY = os.getenv('CRYPTO_COMPARE_API_KEY')
 API_BASE_URL= os.getenv('API_BASE_URL_CRYPTO_COMPARE')
-print("PIERRE DEBUG :" , "key :", API_KEY)
-print("URL :", API_BASE_URL)
-# Method to get the top 10 coins list to get the data from 
-def get_toplist_pair_by_volume():
-    endpoint = 'https://min-api.cryptocompare.com/data/top/volumes?tsym=USD&limit=9'
-    response = requests.get(endpoint)
-    if response.status_code == 200:
-        raw_response = response.json()['Data']
-        for coin in raw_response:
-            COIN_SYMBOLS.append(coin['SYMBOL'])
 
+# Method to get the top 10 coins list to get the data from 
+# def get_toplist_pair_by_volume():
+#     endpoint = 'https://min-api.cryptocompare.com/data/top/volumes?tsym=USD&limit=9'
+#     response = requests.get(endpoint)
+#     if response.status_code == 200:
+#         raw_response = response.json()['Data']
+#         for coin in raw_response:
+#             COIN_SYMBOLS.append(coin['SYMBOL'])
+#     send_to_kafka('coin_list', COIN_SYMBOLS)
 # Call this function at Flask app startup
-get_toplist_pair_by_volume()
+# get_toplist_pair_by_volume()
+send_to_kafka('coin_list', COIN_SYMBOLS)
 
 # Method to get the list of all coins and theyr id , use the symbol from the response
 # on each coin to call get_price_for_coin()
