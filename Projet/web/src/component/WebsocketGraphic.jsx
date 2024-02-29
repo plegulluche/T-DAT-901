@@ -5,10 +5,6 @@ import CryptoBadge from "./CryptoBadge";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Chart from './Chart';
 import ControlComponent from "./ControlComponent";
-  
-//   function Chart({ prices }) {
-//   }
-  
 
 export default function WebsocketGraphic(props) {
     const { symbols, tradeType, prices, kafkaPrice } = props;
@@ -33,7 +29,6 @@ export default function WebsocketGraphic(props) {
         }
     }, [symbols]);
 
-    // console.log(symbols)
     return (
         <div className="w-full">
             <div className="ml-[300px]">
@@ -44,7 +39,7 @@ export default function WebsocketGraphic(props) {
             <div className="flex gap-5">
             
                 <div className="w-[300px] bg-[#232323] border border-gray-500/50 rounded-lg p-3">
-                    <p className="text-white mb-4 text-lg">Prix: {kafkaPrice} EUR</p>
+                    {kafkaPrice && <p className="text-white mb-4 text-lg">{kafkaPrice} EUR</p>}
                     <CryptoBadge symbol={symbols.find(el => el.quoteAsset === "EUR")} height={500} index={0} websocketDataAggregation={websocketDataAggregation} />
                 </div>
                 <div className="w-full rounded-lg">

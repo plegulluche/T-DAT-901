@@ -69,7 +69,7 @@ function BinanceLiveMultiSymbol(redis, symbols, tradeType) {
 
     console.log('symbols', symbols);
     if (symbols.length > 0) {
-        console.log('symbols to be executed', symbols);
+        // console.log('symbols to be executed', symbols);
         terminateCallback = startWebsocketStream(symbols);
     }
 
@@ -158,7 +158,7 @@ async function BinanceGetKlines(redis, interval) {
         let url = websocketUrl1 + '/ws';
         let aggregatedSymbolString = '';
 
-        console.log('constructSocketWithDividedSymbols', intervalMin, intervalMax)
+        // console.log('constructSocketWithDividedSymbols', intervalMin, intervalMax)
 
         allSymbols.slice(intervalMin, intervalMax).forEach((symbol) => {
             aggregatedSymbolString = aggregatedSymbolString + '/' + symbol.toLowerCase() + interval;

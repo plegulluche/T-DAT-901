@@ -18,7 +18,7 @@ export default function Jsondata() {
       .replace('{id}', user._id)
       axios.get(request)
       .then((response) => {
-        console.log(response.data.length)
+        // console.log(response.data.length)
         if (!response.data.length) setKeywords(['crypto'])
         else setKeywords(response.data.map(elem => elem.keyword))
         })

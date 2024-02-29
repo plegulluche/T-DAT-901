@@ -6,6 +6,8 @@ import WebsocketGraphic from '../component/WebsocketGraphic';
 import { formatNumber } from './CryptoMain';
 import moment from "moment"
 import { useSelector } from 'react-redux';
+import { Pie, PieChart } from 'recharts';
+import { ThumbsDown, ThumbsUp } from 'iconoir-react';
 
 export default function CryptoDetails(props) {
 
@@ -15,6 +17,7 @@ export default function CryptoDetails(props) {
     const [ws, setWs] = useState(null); // WebSocket state
     const startDate = useSelector((state) => state.dateReducer.startDate);
     const [kafkaPrice, setKafakPrice] = useState()
+    const [feeling, setFeeling] = useState()
 
     
     useEffect(() => {
@@ -38,9 +41,7 @@ export default function CryptoDetails(props) {
             console.log('Received message from server');
             try {
                 const data = JSON.parse(event.data);
-                console.log('Parsed data:', data);
                 if (data && data.value && data.value.price) {
-                    console.log("value", data.value.price["EUR"])
                     setKafakPrice(data.value.price["EUR"])
                 }
                 // Update your state or perform actions based on the message data
@@ -75,12 +76,25 @@ export default function CryptoDetails(props) {
             setPrices(e.data.data);
         });
     }
+
+    const getCryptoFeeling = async (fiat, coin, startDate, endDate) => {
+        // await axios({
+        //     method: "get",
+        //     url: `http://localhost:8000/api/v1/sentiment-analysis`,
+        // }).then(e => {
+        //     console.log("feeling", e)
+        //     setFeeling(e.data.data)
+        // });
+    }
     
 
     useEffect(() => {
-        if (cryptoDetails && cryptoDetails.cryptoCoin && startDate)
-          getCryptoPrice("EUR", cryptoDetails.cryptoCoin.symbol, moment().subtract(3, "year").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"));
+        if (cryptoDetails && cryptoDetails.cryptoCoin && startDate) {
+            getCryptoFeeling()
+            getCryptoPrice("EUR", cryptoDetails.cryptoCoin.symbol, startDate, moment().format("YYYY-MM-DD"));
+        }
       }, [cryptoDetails, startDate]);
+
 
     return (
         <div className='min-h-screen w-full flex flex-col lg:pl-[140px] pr-[80px] p-5 relative'>
@@ -108,11 +122,14 @@ export default function CryptoDetails(props) {
                         <p className='text-white text-[14px] w-[100px] truncate'>{cryptoDetails?.cryptoCoinDetails?.links}</p>
                     </div>
                 </div>
-                <div className='w-1/3 bg-[#232323] border border-gray-500/50 rounded p-3 flex flex-col gap-2 items-center shadow-xl'>
+                <div className={`w-1/3 bg-[#232323] border ${true ? "border-green-500" : "border-red-500"} rounded p-3 flex flex-col gap-2 items-center shadow-xl`}>
                     <p className='text-gray-200'>Feeling analysis</p>
                     <p className='text-green-500 font-bold text-4xl'>
-                    <svg className='w-10 h-10 text-green-500' width="24px" height="24px" stroke-width="2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                    ><path d="M16.4724 20H4.1C3.76863 20 3.5 19.7314 3.5 19.4V9.6C3.5 9.26863 3.76863 9 4.1 9H6.86762C7.57015 9 8.22116 8.6314 8.5826 8.02899L11.293 3.51161C11.8779 2.53688 13.2554 2.44422 13.9655 3.33186C14.3002 3.75025 14.4081 4.30635 14.2541 4.81956L13.2317 8.22759C13.1162 8.61256 13.4045 9 13.8064 9H18.3815C19.7002 9 20.658 10.254 20.311 11.5262L18.4019 18.5262C18.1646 19.3964 17.3743 20 16.4724 20Z" stroke="green" stroke-width="2" stroke-linecap="round"></path><path d="M7 20L7 9" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    {true ? 
+                        <ThumbsUp className='w-10 h-10 text-green-500' />
+                : (
+                    <ThumbsDown className='w-10 h-10 text-red-500' />
+                )}
                     </p>
                 </div>
             </div>

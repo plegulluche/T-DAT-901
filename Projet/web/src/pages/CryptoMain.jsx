@@ -30,15 +30,15 @@ function CryptoRowComparaison({crypto, index}) {
     const [hasConnected, setHasConnected] = useState(false);
 
     useEffect(() => {
-        if (crypto.symbol === "BTC") {
+        // if (crypto.symbol === "BTC") {
             axios.get(requests.GetCryptoCoinById + crypto._id).then((response) => {
                 setCryptoDetails(response.data);
             });
-        }
+        // }
     }, [crypto]);
 
     useEffect(() => {
-        if (websocketData.length && crypto.symbol === "BTC") {
+        if (websocketData.length) {
             const constructedObject = { ...websocketDataAggregation }
             Object.keys(constructedObject).forEach(key => key === 'undefined' && delete constructedObject[key])
             websocketData && websocketData.forEach(elem => { constructedObject[elem?.symbol] = elem; })
@@ -47,7 +47,7 @@ function CryptoRowComparaison({crypto, index}) {
     }, [websocketData]);
 
     useEffect(() => {
-        if (crypto.symbol === "BTC" && cryptoDetails && cryptoDetails.cryptoCoinDetails) {
+        if (cryptoDetails && cryptoDetails.cryptoCoinDetails) {
             const pair = cryptoDetails?.cryptoCoinDetails?.tradingPairs
             console.log(pair)
             websocketTerminate.current = websocketConnectMulti(cryptoDetails?.cryptoCoinDetails?.tradingPairs, '!ticker@arr', setHasConnected, setWebsocketData);
@@ -56,11 +56,8 @@ function CryptoRowComparaison({crypto, index}) {
 
 
     return (
-        <Table.Tr key={crypto.name} className="text-gray-100 border border-green-500 font-normal hover:cursor-pointer hover:bg-black/20 relative" onClick={() => navigate(`/crypto/${crypto._id}`)}>
+        <Table.Tr key={crypto.name} className="text-gray-100 border-gray-100/20 font-normal hover:cursor-pointer hover:bg-black/20 relative" onClick={() => navigate(`/crypto/${crypto._id}`)}>
             <Table.Td className="border-none">
-            <div className='absolute top-[3px] left-[5px]'>
-                <p className='text-[10px] text-green-500 font-semibold'>BASIC</p>
-            </div>
                 <p>
                     {index+1}
                 </p>
@@ -83,12 +80,13 @@ function CryptoRowComparaison({crypto, index}) {
                 {formatNumber(crypto.totalSupply?.toFixed(2))}
             </Table.Td>
             <Table.Td className="border-none">
-                {websocketDataAggregation["BTCEUR"] && <p>
-                    {parseFloat(websocketDataAggregation["BTCEUR"]?.lastPrice).toFixed(2)} €
+                <>
+                {websocketDataAggregation[`${crypto.symbol}EUR`] && parseFloat(websocketDataAggregation[`${crypto.symbol}EUR`]?.lastPrice) && <p>
+                    {parseFloat(websocketDataAggregation[`${crypto.symbol}EUR`]?.lastPrice).toFixed(2)} €
                 </p>}
+                </>
             </Table.Td>
             <Table.Td className="border-none py-3 text-end">
-                <NavArrowUp width={25} height={25} strokeWidth={2} className='text-green-500' />
              </Table.Td>
         </Table.Tr>
     )
@@ -141,8 +139,6 @@ export default function CryptoMain({}) {
     const [cryptoData, setCryptoData] = useState([]);
     const userData = useSelector((state) => state.userReducer)
     const {getUser} = useUserContext()
-    const [websocketDataAggregation, setWebsocketDataAggregation] = useState('');
-
     
     useEffect(() => {
         if (getUser() === 'anonymous') {
@@ -212,8 +208,8 @@ export default function CryptoMain({}) {
                     <Table.Tbody>
                         {cryptoData?.slice(0, 10).map((crypto, index) => (
                             <>
-                                {crypto.symbol === "BTC" && <CryptoRowComparaison crypto={crypto} key={index} index={index}/>}
-                                <CryptoRow crypto={crypto} key={index} index={index}/>
+                                <CryptoRowComparaison crypto={crypto} key={index} index={index}/>
+                                {/* <CryptoRow crypto={crypto} key={index} index={index}/> */}
                             </>
                         ))}
                     </Table.Tbody>
