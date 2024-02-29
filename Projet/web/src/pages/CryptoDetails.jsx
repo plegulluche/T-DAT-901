@@ -14,6 +14,7 @@ export default function CryptoDetails(props) {
     const [prices, setPrices] = useState([]);
     const [ws, setWs] = useState(null); // WebSocket state
     const startDate = useSelector((state) => state.dateReducer.startDate);
+    const [kafkaPrice, setKafakPrice] = useState()
 
     
     useEffect(() => {
@@ -38,7 +39,10 @@ export default function CryptoDetails(props) {
             try {
                 const data = JSON.parse(event.data);
                 console.log('Parsed data:', data);
-                if (data && data.value && data.value.price) console.log("value", data.value)
+                if (data && data.value && data.value.price) {
+                    console.log("value", data.value.price["EUR"])
+                    setKafakPrice(data.value.price["EUR"])
+                }
                 // Update your state or perform actions based on the message data
             } catch (error) {
                 console.error('Error parsing message data:', error);
@@ -115,7 +119,7 @@ export default function CryptoDetails(props) {
             </div>
             <div className='mt-5'>
                 {cryptoDetails?.cryptoCoinDetails?.tradingPairs !== undefined &&
-                    <WebsocketGraphic prices={prices} symbols={cryptoDetails?.cryptoCoinDetails?.tradingPairs} tradeType={'!ticker@arr'}/>
+                    <WebsocketGraphic prices={prices}  kafkaPrice={kafkaPrice} symbols={cryptoDetails?.cryptoCoinDetails?.tradingPairs} tradeType={'!ticker@arr'}/>
                 }
             </div>
         </div>

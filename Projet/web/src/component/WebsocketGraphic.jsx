@@ -11,7 +11,7 @@ import ControlComponent from "./ControlComponent";
   
 
 export default function WebsocketGraphic(props) {
-    const { symbols, tradeType, prices } = props;
+    const { symbols, tradeType, prices, kafkaPrice } = props;
     const [websocketData, setWebsocketData] = useState([]);
     const [websocketDataAggregation, setWebsocketDataAggregation] = useState('');
     const [hasConnected, setHasConnected] = useState(false);
@@ -43,7 +43,8 @@ export default function WebsocketGraphic(props) {
             {symbols.find(el => el.quoteAsset === "EUR") && 
             <div className="flex gap-5">
             
-                <div className="w-[300px]">
+                <div className="w-[300px] bg-[#232323] border border-gray-500/50 rounded-lg p-3">
+                    <p className="text-white mb-4 text-lg">Prix: {kafkaPrice} EUR</p>
                     <CryptoBadge symbol={symbols.find(el => el.quoteAsset === "EUR")} height={500} index={0} websocketDataAggregation={websocketDataAggregation} />
                 </div>
                 <div className="w-full rounded-lg">
