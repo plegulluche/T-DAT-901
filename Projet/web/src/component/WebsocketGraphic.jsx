@@ -15,7 +15,6 @@ export default function WebsocketGraphic(props) {
     const [websocketData, setWebsocketData] = useState([]);
     const [websocketDataAggregation, setWebsocketDataAggregation] = useState('');
     const [hasConnected, setHasConnected] = useState(false);
-    const [klineSymbol, setKlineSymbol] = useState('');
     const websocketTerminate = useRef(null);
     
 
@@ -34,24 +33,22 @@ export default function WebsocketGraphic(props) {
         }
     }, [symbols]);
 
-    console.log("prices", prices)
-
+    console.log(symbols)
     return (
         <div className="w-full">
             <div className="ml-[300px]">
                 <ControlComponent />
             </div>
             
-            {symbols.find(el => el.quoteAsset === "USDT") && 
+            {symbols.find(el => el.quoteAsset === "EUR") && 
             <div className="flex gap-5">
             
                 <div className="w-[300px]">
-                    <CryptoBadge symbol={symbols.find(el => el.quoteAsset === "USDT")} height={500} index={0} websocketDataAggregation={websocketDataAggregation} />
+                    <CryptoBadge symbol={symbols.find(el => el.quoteAsset === "EUR")} height={500} index={0} websocketDataAggregation={websocketDataAggregation} />
                 </div>
                 <div className="w-full rounded-lg">
 
                     <div id="chart" className='bg-[#232323] border border-gray-500/50 w-full h-[500px] rounded-lg shadow-xl flex items-center justify-center' style={{ height: 500 }} >
-                        {/* <Chart prices={prices}/> */}
                         <Chart prices = {prices}/>
                     </div>
                 </div>

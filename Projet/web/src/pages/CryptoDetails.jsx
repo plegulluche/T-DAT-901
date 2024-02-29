@@ -41,7 +41,7 @@ export default function CryptoDetails(props) {
 
     useEffect(() => {
         if (cryptoDetails && cryptoDetails.cryptoCoin && startDate)
-          getCryptoPrice("USD", cryptoDetails.cryptoCoin.symbol, startDate, moment().format("YYYY-MM-DD"));
+          getCryptoPrice("EUR", cryptoDetails.cryptoCoin.symbol, startDate, moment().format("YYYY-MM-DD"));
       }, [cryptoDetails, startDate]);
 
     return (

@@ -13,15 +13,6 @@ function MainArticle({ content }) {
     minHeight: "2.5em", // Adjust based on your font-size to fit two lines
   };
 
-  const descStyle = {
-    WebkitLineClamp: 2,
-    display: "-webkit-box",
-    WebkitBoxOrient: "vertical",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    minHeight: "2.5em", // Adjust based on your font-size to fit three lines
-  };
-
   return (
     <div
       className="bg-[#232323] border border-gray-500/50 flex flex-col p-4 rounded-lg mb-4 ml-4 overflow-hidden"
@@ -37,6 +28,7 @@ function MainArticle({ content }) {
       <div className="flex flex-col flex-grow pt-4">
         <p
           style={titleStyle}
+          onClick={() => window.open(content.link, "_blank")}
           className="text-gray-300 text-lg cursor-pointer hover:text-purple-500"
         >
           {content.name}

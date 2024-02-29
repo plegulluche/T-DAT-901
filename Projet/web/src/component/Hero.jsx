@@ -25,10 +25,6 @@ const Hero = ({ data }) => {
     groupedArticles.push(data.slice(i, i + 2));
   }
 
-  console.log(groupedArticles);
-
-  // if (!data.length) return <Loader />;
-
   return (
     <div className='h-screen pt-8'>
       <div className='mb-5'>
