@@ -16,6 +16,7 @@ multidict==6.0.5
 nltk==3.8.1
 pycares==4.4.0
 pycparser==2.21
+pytz==2024.1
 regex==2023.12.25
 requests==2.31.0
 tqdm==4.66.2

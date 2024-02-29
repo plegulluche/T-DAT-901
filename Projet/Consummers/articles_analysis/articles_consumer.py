@@ -7,6 +7,8 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import nltk
+from datetime import datetime, timezone, timedelta
+import pytz
 
 nltk.download('vader_lexicon')
 nltk.download('punkt')
@@ -23,6 +25,15 @@ consumer = KafkaConsumer(
         value_deserializer=lambda x: json.loads(x.decode('utf-8')),
         consumer_timeout_ms=5000
 )
+
+def get_current_date_est():
+    eastern = pytz.timezone('US/Eastern')
+    
+    current_time_utc = datetime.now(timezone.utc)
+    current_time_est = current_time_utc.astimezone(eastern)
+    
+    formatted_date = current_time_est.strftime("%B %d, %Y %H:%M EST")
+    return formatted_date
 
 def fetch_cryptocurrencies():
     exchange = ccxt.binance()
@@ -80,7 +91,8 @@ def main():
                 sentiment = "Positive"
             elif score['compound'] < -0.5:
                 sentiment = "Negative"
-        
+            if not date or date == 'Unknown Date':
+                date = get_current_date_est()
             if crypto_found not in crypto_sentiment_scores:
                 crypto_sentiment_scores[crypto_found] = [{'date': date, 'sentiment': sentiment}]
             else:
