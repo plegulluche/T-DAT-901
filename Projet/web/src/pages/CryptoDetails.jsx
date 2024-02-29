@@ -21,15 +21,23 @@ export default function CryptoDetails(props) {
         });
     }, [crypto]);
 
-    const getCryptoPrice = async (fiat, coin, startDate, endDate ) => {
+    const getCryptoPrice = async (fiat, coin, startDate, endDate) => {
         await axios({
             method: "get",
             url: `http://localhost:8000/api/v1/historical-data?fiat=${fiat}&coin=${coin}&start_date=${startDate}&end_date=${endDate}`,
         }).then(e => {
-            console.log("test",e.data.data)
-            setPrices(e.data.data)
-        })
+            console.log("test", e.data.data);
+            
+            // Determine the size of one third of the results
+            const thirdSize = Math.floor(e.data.data.length / 3);
+            
+            // Take the first third of the results
+            const oneThirdData = e.data.data.slice(0, thirdSize);
+            
+            setPrices(oneThirdData);
+        });
     }
+    
 
     useEffect(() => {
         if (cryptoDetails && cryptoDetails.cryptoCoin && startDate)
