@@ -10,13 +10,19 @@ export default function ControlComponent() {
 
   useEffect(() => {
     // Dispatch action to set the start date to a year ago as the component mounts
-    handleYearClick(); // Assuming you want the year to be selected initially
+    handleTDClick(); // Assuming you want the year to be selected initially
   }, []); // Empty dependency array means this effect runs once on mount
 
   const handleYearClick = () => {
     const startDate = moment().subtract(1, 'years').format('YYYY-MM-DD');
     dispatch(setStartDate(startDate));
     setActiveTab('year'); // Set active tab to 'year'
+  };
+
+  const handleTDClick = () => {
+    const startDate = moment().subtract(3, 'years').format('YYYY-MM-DD');
+    dispatch(setStartDate(startDate));
+    setActiveTab('TD'); // Set active tab to 'year'
   };
 
   const handleMonthClick = () => {
@@ -27,6 +33,12 @@ export default function ControlComponent() {
 
   return (
     <div className="flex gap-4">
+      <button 
+        onClick={handleTDClick} 
+        className={` text-white font-semibold py-2 px-4 rounded transition-all duration-300 ease-in-out ${activeTab === 'TD' ? ' text-purple-700 shadow-lg' : 'opacity-70 hover:text-purple-600'}`}
+      >
+        To date
+      </button>
       <button 
         onClick={handleYearClick} 
         className={` text-white font-semibold py-2 px-4 rounded transition-all duration-300 ease-in-out ${activeTab === 'year' ? ' text-purple-700 shadow-lg' : 'opacity-70 hover:text-purple-600'}`}

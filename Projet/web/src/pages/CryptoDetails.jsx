@@ -71,13 +71,13 @@ export default function CryptoDetails(props) {
         }).then(e => {
             // console.log("test", e.data.data);
             
-            // Determine the size of one third of the results
-            const thirdSize = Math.floor(e.data.data.length / 3);
+            // // Determine the size of one third of the results
+            // const thirdSize = Math.floor(e.data.data.length / 3);
             
-            // Take the first third of the results
-            const oneThirdData = e.data.data.slice(0, thirdSize);
+            // // Take the first third of the results
+            // const oneThirdData = e.data.data.slice(0, thirdSize);
             
-            setPrices(oneThirdData);
+            setPrices(e.data.data);
         });
     }
     

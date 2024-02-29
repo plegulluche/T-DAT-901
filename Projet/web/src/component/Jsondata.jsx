@@ -35,15 +35,15 @@ export default function Jsondata() {
   async function FetchDataFromRssFeed() {
     // Determine the query based on the presence of a search term
     const query = search.searchTerm
-      ? `(${search.searchTerm})`
+      ? `${search.searchTerm}`
       : keywords && keywords.length
-        ? `(${keywords.join(" OR ")})`
+        ? `${keywords.join(" OR ")}`
         : '';
   
     try {
       const response = await axios.get('https://newsapi.org/v2/everything', {
         params: {
-          q: query,
+          q: query + " cryptocurrency",
           sortBy: 'popularity',
           apiKey: process.env.REACT_APP_API_KEY, // Use an environment variable for your API key
         }
